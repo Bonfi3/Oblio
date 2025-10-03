@@ -181,52 +181,41 @@ export default function Home() {
                     {/* Swap LSTs Tab */}
                     {activeTab === 'swap' && (
                       <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-400 mb-2">
-                            From
-                          </label>
-                          <div className="relative bg-black/30 border border-white/10 rounded-xl p-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <input
-                                type="number"
-                                placeholder="0.00"
-                                className="bg-transparent text-white text-2xl focus:outline-none w-full"
-                              />
-                              <div className="flex items-center gap-2 px-3 py-2 bg-white/10 rounded-lg">
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195]"></div>
-                                <span className="font-semibold text-white">SOL</span>
-                              </div>
+                        <div className="flex items-center gap-3">
+                          {/* From Token */}
+                          <div className="flex-1 bg-black/30 border border-white/10 rounded-xl p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195]"></div>
+                              <span className="font-semibold text-white">SOL</span>
                             </div>
-                            <div className="text-sm text-gray-500">Balance: 0.00 SOL</div>
+                            <input
+                              type="number"
+                              placeholder="0.00"
+                              className="bg-transparent text-white text-xl focus:outline-none w-full mb-1"
+                            />
+                            <div className="text-xs text-gray-500">Balance: 0.00</div>
                           </div>
-                        </div>
 
-                        <div className="flex justify-center -my-2">
-                          <button className="w-10 h-10 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/5 transition-colors">
+                          {/* Swap Icon */}
+                          <button className="w-10 h-10 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/5 transition-colors flex-shrink-0">
                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                             </svg>
                           </button>
-                        </div>
 
-                        <div>
-                          <label className="block text-sm font-medium text-gray-400 mb-2">
-                            To
-                          </label>
-                          <div className="relative bg-black/30 border border-white/10 rounded-xl p-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <input
-                                type="number"
-                                placeholder="0.00"
-                                readOnly
-                                className="bg-transparent text-white text-2xl focus:outline-none w-full cursor-not-allowed"
-                              />
-                              <div className="flex items-center gap-2 px-3 py-2 bg-white/10 rounded-lg">
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#14F195] to-[#9945FF]"></div>
-                                <span className="font-semibold text-white">oSOL</span>
-                              </div>
+                          {/* To Token */}
+                          <div className="flex-1 bg-black/30 border border-white/10 rounded-xl p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#14F195] to-[#9945FF]"></div>
+                              <span className="font-semibold text-white">oSOL</span>
                             </div>
-                            <div className="text-sm text-gray-500">Balance: 0.00 oSOL</div>
+                            <input
+                              type="number"
+                              placeholder="0.00"
+                              readOnly
+                              className="bg-transparent text-white text-xl focus:outline-none w-full cursor-not-allowed mb-1"
+                            />
+                            <div className="text-xs text-gray-500">Balance: 0.00</div>
                           </div>
                         </div>
 
