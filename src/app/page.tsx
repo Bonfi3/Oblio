@@ -6,7 +6,17 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
+  const [stakeAmount, setStakeAmount] = useState('');
   const { connected } = useWallet();
+
+  // Calculate estimated rewards per year
+  const calculateEstimatedRewards = (amount: string, apy: number) => {
+    const numAmount = parseFloat(amount) || 0;
+    return (numAmount * apy / 100).toFixed(4);
+  };
+
+  const apy = 6.5;
+  const estimatedRewards = calculateEstimatedRewards(stakeAmount, apy);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#141420] to-[#0f0f1a] relative overflow-hidden">
@@ -49,11 +59,11 @@ export default function Home() {
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   <div className="bg-gradient-to-br from-[#9945FF]/10 to-transparent border border-[#9945FF]/20 rounded-xl p-4">
                     <div className="text-xs text-gray-400 mb-1">APY</div>
-                    <div className="text-2xl font-bold text-white">7.2%</div>
+                    <div className="text-2xl font-bold text-white">{apy}%</div>
                   </div>
                   <div className="bg-gradient-to-br from-[#14F195]/10 to-transparent border border-[#14F195]/20 rounded-xl p-4">
-                    <div className="text-xs text-gray-400 mb-1">Total Staked</div>
-                    <div className="text-2xl font-bold text-white">24.5K SOL</div>
+                    <div className="text-xs text-gray-400 mb-1">Est. rewards per year</div>
+                    <div className="text-2xl font-bold text-white">{estimatedRewards} SOL</div>
                   </div>
                 </div>
 
@@ -135,6 +145,8 @@ export default function Home() {
                             <input
                               type="number"
                               placeholder="0.00"
+                              value={stakeAmount}
+                              onChange={(e) => setStakeAmount(e.target.value)}
                               className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-4 text-white text-lg focus:outline-none focus:border-[#9945FF] transition-colors"
                             />
                             <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium text-white transition-colors">
