@@ -2,11 +2,18 @@
 
 import { useState } from 'react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+//import dynamic from 'next/dynamic';
 import { useWallet } from '@solana/wallet-adapter-react';
 
+
+// const WalletMultiButton = dynamic(
+//   () => import('@solana/wallet-adapter-react-ui').then(mod => ({ default: mod.WalletMultiButton })),
+//   { ssr: false }
+// );
 export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
   const [stakeAmount, setStakeAmount] = useState('');
+  const [isSwapped, setIsSwapped] = useState(false);
   const { connected } = useWallet();
 
   // Calculate estimated rewards per year
@@ -103,13 +110,13 @@ export default function Home() {
 
                 {/* Tab Content */}
                 {!connected ? (
-                  <div className="text-center space-y-6">
-                    <div className="py-12">
-                      <div className="relative w-24 h-24 mx-auto mb-6">
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <div className="relative w-20 h-20 mx-auto mb-4">
                         <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50"></div>
-                        <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195] flex items-center justify-center shadow-xl">
+                        <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195] flex items-center justify-center shadow-xl">
                           <svg 
-                            className="w-12 h-12 text-white" 
+                            className="w-10 h-10 text-white" 
                             fill="none" 
                             stroke="currentColor" 
                             viewBox="0 0 24 24"
@@ -123,13 +130,13 @@ export default function Home() {
                           </svg>
                         </div>
                       </div>
-                      <h2 className="text-2xl font-semibold text-white mb-3">
+                      <h2 className="text-xl font-semibold text-white mb-2">
                         Connect your wallet
                       </h2>
-                      <p className="text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
+                      <p className="text-gray-400 mb-6 max-w-sm mx-auto leading-relaxed text-sm">
                         Get highest staking rewards while maintaining privacy and security with confidential liquid staking on Solana.
                       </p>
-                      <WalletMultiButton className="!w-full !py-4 !rounded-xl !font-semibold !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !shadow-lg !shadow-[#9945FF]/40 hover:!shadow-[#14F195]/40" />
+                      <WalletMultiButton className="!w-full !py-3 !rounded-xl !font-semibold !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !shadow-lg !shadow-[#9945FF]/40 hover:!shadow-[#14F195]/40" />
                     </div>
                   </div>
                 ) : (
@@ -197,8 +204,14 @@ export default function Home() {
                           {/* From Token */}
                           <div className="flex-1 bg-black/30 border border-white/10 rounded-xl p-4">
                             <div className="flex items-center gap-2 mb-2">
-                              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9945FF] to-[#14F195]"></div>
-                              <span className="font-semibold text-white">SOL</span>
+                              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                                {!isSwapped ? (
+                                  <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
+                                ) : (
+                                  <img src="/logo.png" alt="Oblio" className="w-5 h-5" />
+                                )}
+                              </div>
+                              <span className="font-semibold text-white">{!isSwapped ? 'SOL' : 'oSOL'}</span>
                             </div>
                             <input
                               type="number"
@@ -209,7 +222,10 @@ export default function Home() {
                           </div>
 
                           {/* Swap Icon */}
-                          <button className="w-10 h-10 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/5 transition-colors flex-shrink-0">
+                          <button 
+                            onClick={() => setIsSwapped(!isSwapped)}
+                            className="w-10 h-10 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/5 transition-colors flex-shrink-0"
+                          >
                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                             </svg>
@@ -218,8 +234,14 @@ export default function Home() {
                           {/* To Token */}
                           <div className="flex-1 bg-black/30 border border-white/10 rounded-xl p-4">
                             <div className="flex items-center gap-2 mb-2">
-                              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#14F195] to-[#9945FF]"></div>
-                              <span className="font-semibold text-white">oSOL</span>
+                              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center">
+                                {!isSwapped ? (
+                                  <img src="/logo.png" alt="Oblio" className="w-5 h-5" />
+                                ) : (
+                                  <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
+                                )}
+                              </div>
+                              <span className="font-semibold text-white">{!isSwapped ? 'oSOL' : 'SOL'}</span>
                             </div>
                             <input
                               type="number"
