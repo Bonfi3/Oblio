@@ -114,13 +114,38 @@ export default function Home() {
               BETA
             </span>
           </div>
+          
+          {/* Confidential Liquid Staking Title - Desktop only */}
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center">
+            <div className="relative group/title">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div>
+              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
+                <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
+                  Confidential Liquid Staking
+                </h1>
+              </div>
+            </div>
+          </div>
+          
           <WalletMultiButton className="!bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !shadow-lg !shadow-[#9945FF]/25 hover:!shadow-[#14F195]/25 !rounded-xl !font-medium" />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-screen px-4">
-        <div className="w-full flex items-center justify-center">
+      <main className="flex items-center justify-center min-h-screen px-4 pt-12 md:pt-20">
+        <div className="w-full flex flex-col items-center justify-center gap-4 md:gap-0">
+          {/* Confidential Liquid Staking Title - Mobile only */}
+          <div className="md:hidden flex items-center justify-center">
+            <div className="relative group/title">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div>
+              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
+                <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
+                  Confidential Liquid Staking
+                </h1>
+              </div>
+            </div>
+          </div>
+          
           {/* Card */}
           <div className="relative group">
             {/* Outer rotating glow effect */}
@@ -220,30 +245,19 @@ export default function Home() {
                 <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#14F195] to-transparent"></div>
               </div>
               
-              <div className="relative z-10 w-full max-w-sm px-8">
-                <div className="flex items-center justify-center mb-6">
-                  <div className="relative group/title">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div>
-                    <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2.5">
-                      <h1 className="text-base font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
-                        Confidential Liquid Staking
-                      </h1>
-                    </div>
-                  </div>
-                </div>
-
+              <div className="relative z-10 w-full max-w-sm px-6 flex flex-col items-center justify-center">
                 {/* Stats bar */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-6 w-full">
                   <div className="relative group/stat">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#9945FF]/20 to-transparent rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
-                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#9945FF]/30 rounded-full p-3 hover:border-[#9945FF]/50 transition-all aspect-square flex flex-col items-center justify-center">
+                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#9945FF]/30 rounded-full p-4 hover:border-[#9945FF]/50 transition-all aspect-square flex flex-col items-center justify-center">
                       <div className="text-[10px] font-medium text-[#9945FF] mb-0.5 uppercase tracking-wider">APY</div>
                       <div className="text-2xl font-bold bg-gradient-to-r from-white to-[#9945FF] bg-clip-text text-transparent">{apy}%</div>
                     </div>
                   </div>
                   <div className="relative group/stat">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#14F195]/20 to-transparent rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
-                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#14F195]/30 rounded-full p-3 hover:border-[#14F195]/50 transition-all aspect-square flex flex-col items-center justify-center">
+                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#14F195]/30 rounded-full p-4 hover:border-[#14F195]/50 transition-all aspect-square flex flex-col items-center justify-center">
                       <div className="text-[10px] font-medium text-[#14F195] mb-0.5 uppercase tracking-wider text-center">Rewards</div>
                       <div className="text-xl font-bold bg-gradient-to-r from-white to-[#14F195] bg-clip-text text-transparent">{estimatedRewards}</div>
                     </div>
@@ -251,10 +265,10 @@ export default function Home() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-2 mb-6">
+                <div className="flex gap-2 mb-6 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-2 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'stake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
@@ -270,7 +284,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-2 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'unstake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
@@ -286,7 +300,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-2 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'swap'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
@@ -304,7 +318,7 @@ export default function Home() {
 
                 {/* Tab Content */}
                 {!connected ? (
-                  <div className="space-y-5">
+                  <div className="space-y-5 w-full">
                     <div className="text-center">
                       <div className="relative w-16 h-16 mx-auto mb-4">
                         <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-lg opacity-60 animate-pulse-slow"></div>
@@ -337,7 +351,7 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-5 w-full">
                     {/* Stake SOL Tab */}
                     {activeTab === 'stake' && (
                       <div className="space-y-4">
@@ -405,7 +419,7 @@ export default function Home() {
 
                     {/* Swap LSTs Tab */}
                     {activeTab === 'swap' && (
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         <div className="space-y-1.5">
                           {/* From Token */}
                           <div className="relative group/input">
