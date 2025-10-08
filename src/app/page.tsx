@@ -381,7 +381,7 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 border border-white/20 hover:border-white/30 shadow-xl">
+                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
                             Stake SOL
                           </button>
                         </div>
@@ -410,7 +410,7 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 border border-white/20 hover:border-white/30 shadow-xl">
+                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
                             Unstake
                           </button>
                         </div>
@@ -482,7 +482,7 @@ export default function Home() {
 
                         <div className="relative group/btn">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 border border-white/20 hover:border-white/30 shadow-xl">
+                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
                             Swap
                           </button>
                         </div>
