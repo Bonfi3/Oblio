@@ -395,12 +395,12 @@ export default function Home() {
                           <label className="block text-xs font-medium text-gray-300 mb-2">
                             Staked Amount
                           </label>
-                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden">
+                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden pointer-events-none">
                             <input
                               type="text"
                               value="0.00"
                               readOnly
-                              className="w-full bg-transparent px-4 py-3 text-white text-base cursor-not-allowed opacity-70"
+                              className="w-full bg-transparent px-4 py-3 text-white text-base cursor-not-allowed opacity-70 outline-none"
                             />
                           </div>
                           <div className="flex justify-between mt-1.5 text-[10px] text-gray-500">
