@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-//import dynamic from 'next/dynamic';
+//import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import dynamic from 'next/dynamic';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 
-// const WalletMultiButton = dynamic(
-//   () => import('@solana/wallet-adapter-react-ui').then(mod => ({ default: mod.WalletMultiButton })),
-//   { ssr: false }
-// );
+const WalletMultiButton = dynamic(
+  () => import('@solana/wallet-adapter-react-ui').then(mod => ({ default: mod.WalletMultiButton })),
+  { ssr: false }
+);
 export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
   const [stakeAmount, setStakeAmount] = useState('');
@@ -103,7 +103,7 @@ export default function Home() {
       </div>
       
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Oblio Logo" className="w-8 h-8 flex-shrink-0" />
@@ -230,7 +230,7 @@ export default function Home() {
             <div className="absolute inset-4 rounded-full border-2 border-[#9945FF]/20 animate-pulse-slow"></div>
             
             {/* Main card */}
-            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-12 shadow-2xl w-[600px] h-[600px] flex items-center justify-center overflow-hidden" style={{
+            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-12 shadow-2xl w-[600px] h-[600px] flex items-center justify-center overflow-hidden animate-spin-grow-in" style={{
               border: '3px solid transparent',
               backgroundImage: 'linear-gradient(#1a1a2e, #16162a), conic-gradient(from 0deg, #9945FF, #C44AFF, #14F195, #C44AFF, #9945FF)',
               backgroundOrigin: 'border-box',
@@ -246,7 +246,7 @@ export default function Home() {
                 <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#14F195] to-transparent"></div>
               </div>
               
-              <div className="relative z-10 w-full max-w-sm px-6 flex flex-col items-center justify-center">
+              <div className="relative z-10 w-full max-w-sm px-6 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
                 {/* Stats bar */}
                 <div className="grid grid-cols-2 gap-3 mb-6 w-full">
                   <div className="relative group/stat">
