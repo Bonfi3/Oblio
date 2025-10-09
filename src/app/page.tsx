@@ -234,7 +234,8 @@ export default function Home() {
               border: '3px solid transparent',
               backgroundImage: 'linear-gradient(#1a1a2e, #16162a), conic-gradient(from 0deg, #9945FF, #C44AFF, #14F195, #C44AFF, #9945FF)',
               backgroundOrigin: 'border-box',
-              backgroundClip: 'padding-box, border-box'
+              backgroundClip: 'padding-box, border-box',
+              boxShadow: 'inset 0 0 120px 40px rgba(0, 0, 0, 0.8), inset 0 0 80px 20px rgba(0, 0, 0, 0.6), inset 0 0 40px 10px rgba(0, 0, 0, 0.4)'
             }}>
               {/* Animated gradient overlay */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#9945FF]/5 via-transparent to-[#14F195]/5 animate-gradient"></div>
