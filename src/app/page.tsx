@@ -345,10 +345,7 @@ export default function Home() {
                       <p className="text-gray-400 mb-5 text-xs leading-relaxed">
                         Start earning rewards with confidential staking
                       </p>
-                      <div className="relative group/btn">
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
                         <WalletMultiButton className="!w-full !py-3 !rounded-full !font-semibold !text-sm !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !border !border-white/20 hover:!border-white/30 !relative" />
-                      </div>
                     </div>
                   </div>
                 ) : (
