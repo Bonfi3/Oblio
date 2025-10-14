@@ -29,21 +29,122 @@ body {
   }
 }
 
+/* Black hole rotating animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes spin-slower {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* Spin and grow in from extremely tiny to full size */
+@keyframes spin-grow-in {
+  0% {
+    transform: scale(0.01) rotate(-360deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Bubble in effect from center (scale and slight blur) */
+@keyframes bubble-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+    filter: blur(6px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}
+
+.animate-spin-slower {
+  animation: spin-slower 30s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-gradient {
+  animation: gradient 8s ease-in-out infinite;
+}
+
+/* Utilities for our custom entrance effects */
+.animate-spin-grow-in {
+  animation: spin-grow-in 2000ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+  transform-origin: center;
+}
+
+.animate-bubble-in {
+  animation: bubble-in 500ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+  transform-origin: center;
+}
+
 /* Wallet Adapter Custom Styles with Solana gradient */
 .wallet-adapter-button {
   font-family: inherit !important;
   transition: all 0.3s ease !important;
+  font-size: 14px !important;
 }
 
 .wallet-adapter-button-trigger {
-  background: linear-gradient(135deg, #9945FF 0%, #14F195 100%) !important;
-  border: none !important;
-  box-shadow: 0 8px 24px rgba(153, 69, 255, 0.25) !important;
-}
-
-.wallet-adapter-button-trigger:hover {
-  background: linear-gradient(135deg, #7d38cc 0%, #10c276 100%) !important;
-  box-shadow: 0 8px 32px rgba(20, 241, 149, 0.3) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(8px) !important;
 }
 
 .wallet-adapter-modal-wrapper {
@@ -64,7 +165,9 @@ body {
 }
 
 .wallet-adapter-modal-list {
-  background: transparent !important;
+  background: rgba(153, 69, 255, 0.05) !important;
+  border-radius: 1rem !important;
+  padding: 0.5rem !important;
 }
 
 .wallet-adapter-modal-list-more {
@@ -79,14 +182,8 @@ body {
   border-color: rgba(153, 69, 255, 0.3) !important;
 }
 
-.wallet-adapter-button:not([disabled]):hover {
-  background: linear-gradient(135deg, #7d38cc 0%, #10c276 100%) !important;
-}
-
 /* Wallet list items */
 .wallet-adapter-button {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
   border-radius: 0.75rem !important;
   transition: all 0.2s ease !important;
 }
