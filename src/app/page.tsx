@@ -118,7 +118,7 @@ export default function Home() {
           {/* Confidential Liquid Staking Title - Desktop only */}
           <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center">
             <div className="relative group/title">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div>
+              {/* <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div> */}
               <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
                 <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
                   Confidential Liquid Staking
@@ -137,7 +137,7 @@ export default function Home() {
           {/* Confidential Liquid Staking Title - Mobile only */}
           <div className="md:hidden flex items-center justify-center">
             <div className="relative group/title">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div>
+              {/* <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div> */}
               <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
                 <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
                   Confidential Liquid Staking
@@ -257,15 +257,29 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="relative group/stat">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#14F195]/20 to-transparent rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
-                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#14F195]/30 rounded-full p-4 hover:border-[#14F195]/50 transition-all aspect-square flex flex-col items-center justify-center">
-                      <div className="text-[10px] font-medium text-[#14F195] mb-0.5 uppercase tracking-wider text-center">Rewards</div>
-                      <div className="text-xl font-bold bg-gradient-to-r from-white to-[#14F195] bg-clip-text text-transparent">{estimatedRewards}</div>
+                  <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
+                  <div className="relative bg-black/40 backdrop-blur-sm border border-[#9945FF]/30 rounded-full p-4 hover:border-[#9945FF]/50 transition-all aspect-square flex flex-col items-center justify-center">
+                  <div className="text-[10px] font-medium text-[#9945FF] mb-0.5 uppercase tracking-wider text-center">Rewards</div>
+                      <div className="text-xl font-bold bg-gradient-to-r from-white to-[#9945FF] bg-clip-text text-transparent">{estimatedRewards}</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Tabs */}
+                {/* Tab Content */}
+                {!connected ? (
+                  <div className="space-y-5 w-full mt-10">
+                    <div className="text-center">
+                      <h2 className="text-lg font-bold text-white mb-2">
+                        Connect Wallet
+                      </h2>
+                      <p className="text-gray-400 mb-5 text-xs leading-relaxed">
+                        Start earning rewards with confidential staking
+                      </p>
+                        <WalletMultiButton className="!w-full !py-3 !rounded-full !font-semibold !text-sm !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !border !border-white/20 hover:!border-white/30 !relative" />
+                    </div>
+                  </div>
+                ) : (
+                  <>
                 <div className="flex gap-2 mb-6 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
@@ -277,8 +291,7 @@ export default function Home() {
                   >
                     {activeTab === 'stake' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195]"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] blur-md opacity-50"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
                       </>
                     )}
                     <span className="relative z-10">Stake</span>
@@ -293,8 +306,7 @@ export default function Home() {
                   >
                     {activeTab === 'unstake' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195]"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] blur-md opacity-50"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
                       </>
                     )}
                     <span className="relative z-10">Unstake</span>
@@ -309,46 +321,13 @@ export default function Home() {
                   >
                     {activeTab === 'swap' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195]"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] blur-md opacity-50"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
                       </>
                     )}
                     <span className="relative z-10">Swap</span>
                   </button>
                 </div>
 
-                {/* Tab Content */}
-                {!connected ? (
-                  <div className="space-y-5 w-full">
-                    <div className="text-center">
-                      <div className="relative w-16 h-16 mx-auto mb-4">
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-lg opacity-60 animate-pulse-slow"></div>
-                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-[#9945FF] via-[#C44AFF] to-[#14F195] flex items-center justify-center shadow-2xl border border-white/20">
-                          <svg 
-                            className="w-8 h-8 text-white" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M13 10V3L4 14h7v7l9-11h-7z" 
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                      <h2 className="text-lg font-bold text-white mb-2">
-                        Connect Wallet
-                      </h2>
-                      <p className="text-gray-400 mb-5 text-xs leading-relaxed">
-                        Start earning rewards with confidential staking
-                      </p>
-                        <WalletMultiButton className="!w-full !py-3 !rounded-full !font-semibold !text-sm !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !border !border-white/20 hover:!border-white/30 !relative" />
-                    </div>
-                  </div>
-                ) : (
                   <div className="space-y-5 w-full">
                     {/* Stake SOL Tab */}
                     {activeTab === 'stake' && (
@@ -358,7 +337,7 @@ export default function Home() {
                             Amount to Stake
                           </label>
                           <div className="relative group/input">
-                            <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 to-[#14F195]/20 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
                             <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                               <input
                                 type="number"
@@ -367,7 +346,7 @@ export default function Home() {
                                 onChange={(e) => setStakeAmount(e.target.value)}
                                 className="w-full bg-transparent px-4 py-3 text-white text-base focus:outline-none"
                               />
-                              <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-gradient-to-r from-[#9945FF]/20 to-[#14F195]/20 hover:from-[#9945FF]/30 hover:to-[#14F195]/30 border border-[#9945FF]/30 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
+                              <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.1)] rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
                                 MAX
                               </button>
                             </div>
@@ -378,8 +357,8 @@ export default function Home() {
                           </div>
                         </div>
                         <div className="relative group/btn">
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
+                          <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
+                          <button className="relative w-full py-3 border border-white/10  rounded-full font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Stake SOL
                           </button>
                         </div>
@@ -407,8 +386,8 @@ export default function Home() {
                           </div>
                         </div>
                         <div className="relative group/btn">
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
+                          <div className="absolute inset-0 blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
+                          <button className="relative w-full border border-white/10 rounded-full py-3 font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Unstake
                           </button>
                         </div>
@@ -421,11 +400,11 @@ export default function Home() {
                         <div className="space-y-1.5">
                           {/* From Token */}
                           <div className="relative group/input">
-                            <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 to-[#14F195]/20 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
                             <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-2 hover:border-[#9945FF]/50 transition-all">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1.5">
-                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#9945FF]/20 to-[#14F195]/20 border border-white/20 flex items-center justify-center">
+                                  <div className="w-5 h-5 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
                                     {!isSwapped ? (
                                       <img src="/solanaLogoMark.png" alt="Solana" className="w-2.5 h-2.5" />
                                     ) : (
@@ -437,7 +416,7 @@ export default function Home() {
                                 <input
                                   type="number"
                                   placeholder="0.00"
-                                  className="bg-transparent text-white text-sm font-semibold focus:outline-none w-20 text-right"
+                                  className="bg-transparent text-white text-sm font-semibold focus:outline-none w-full text-right"
                                 />
                               </div>
                             </div>
@@ -447,7 +426,7 @@ export default function Home() {
                           <div className="flex justify-center">
                             <button 
                               onClick={() => setIsSwapped(!isSwapped)}
-                              className="relative w-8 h-8 bg-gradient-to-br from-[#9945FF]/20 to-[#14F195]/20 border border-white/20 rounded-full flex items-center justify-center hover:from-[#9945FF]/30 hover:to-[#14F195]/30 transition-all group/swap"
+                              className="relative w-8 h-8 bg-[rgba(153,69,255,0.1)] border border-white/20 rounded-full flex items-center justify-center hover:bg-[rgba(153,69,255,0.1)] transition-all group/swap"
                             >
                               <svg className="w-4 h-4 text-white group-hover/swap:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -459,7 +438,7 @@ export default function Home() {
                           <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-2">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5">
-                                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#9945FF]/20 to-[#14F195]/20 border border-white/20 flex items-center justify-center">
+                                <div className="w-5 h-5 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
                                   {!isSwapped ? (
                                     <img src="/logo.png" alt="Oblio" className="w-3.5 h-3.5" />
                                   ) : (
@@ -472,21 +451,22 @@ export default function Home() {
                                 type="number"
                                 placeholder="0.00"
                                 readOnly
-                                className="bg-transparent text-white text-sm font-semibold focus:outline-none w-20 text-right cursor-not-allowed opacity-70"
+                                className="bg-transparent text-white text-sm font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
                               />
                             </div>
                           </div>
                         </div>
 
                         <div className="relative group/btn">
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF] to-[#14F195] rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-[#7d38cc] hover:to-[#10c276] transition-all duration-300 shadow-xl">
+                          <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
+                          <button className="relative w-full py-3 border border-white/10 rounded-full font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Swap
                           </button>
                         </div>
                       </div>
                     )}
                   </div>
+                </>
                 )}
               </div>
             </div>
