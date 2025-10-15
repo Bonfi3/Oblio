@@ -127,7 +127,7 @@ export default function Home() {
             </div>
           </div>
           
-          <WalletMultiButton className="!bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !shadow-lg !shadow-[#9945FF]/25 hover:!shadow-[#14F195]/25 !rounded-xl !font-medium" />
+          <WalletMultiButton />
         </div>
       </header>
 

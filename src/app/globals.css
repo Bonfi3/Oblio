@@ -160,7 +160,6 @@ body {
 }
 
 .wallet-adapter-modal-title {
-  color: white !important;
   font-weight: 600 !important;
 }
 
@@ -201,6 +200,60 @@ body {
 .wallet-adapter-modal-button-close:hover {
   color: rgba(255, 255, 255, 1) !important;
   background: rgba(153, 69, 255, 0.1) !important;
+}
+
+/* Wallet Adapter Dropdown Styles - Custom gradient styling */
+.wallet-adapter-dropdown,
+ul[class*="wallet-adapter-dropdown"] {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 22, 42, 0.95) 100%) !important;
+  border-radius: 1rem !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.wallet-adapter-dropdown-list,
+[class*="wallet-adapter-dropdown"] [class*="list"] {
+  background: rgba(153, 69, 255, 0.05) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.25rem !important;
+}
+
+.wallet-adapter-dropdown-list-item,
+[class*="wallet-adapter-dropdown"] [class*="item"] {
+  border-radius: 0.75rem !important;
+  font-weight: 500 !important;
+  padding: 0.75rem 1rem !important;
+  cursor: pointer !important;
+}
+
+.wallet-adapter-dropdown-list-item:hover,
+[class*="wallet-adapter-dropdown"] [class*="item"]:hover {
+  border: 1px solid rgba(153, 69, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(153, 69, 255, 0.2) !important;
+}
+
+.wallet-adapter-dropdown-list-item:first-child,
+[class*="wallet-adapter-dropdown"] [class*="item"]:first-child {
+  margin-bottom: 0.25rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.wallet-adapter-dropdown-list-item:not(:first-child),
+[class*="wallet-adapter-dropdown"] [class*="item"]:not(:first-child) {
+  margin-top: 0.25rem !important;
+}
+
+/* Additional fallback selectors for dropdown list */
+ul[class*="dropdown"][class*="wallet"] {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 22, 42, 0.95) 100%) !important;
+  border: 1px solid rgba(153, 69, 255, 0.3) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+ul[class*="dropdown"][class*="wallet"] li {
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
 }
 
 /* Remove number input spinners */
