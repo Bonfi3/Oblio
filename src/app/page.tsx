@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 //import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import dynamic from 'next/dynamic';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -14,7 +14,13 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
   const [stakeAmount, setStakeAmount] = useState('');
   const [isSwapped, setIsSwapped] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { connected } = useWallet();
+
+  // Ensure component is mounted before generating random values
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Calculate estimated rewards per year
   const calculateEstimatedRewards = (amount: string, apy: number) => {
@@ -25,81 +31,150 @@ export default function Home() {
   const apy = 6.5;
   const estimatedRewards = calculateEstimatedRewards(stakeAmount, apy);
 
+  // Generate star data only after component is mounted to prevent hydration mismatches
+  const starData = useMemo(() => {
+    if (!isMounted) {
+      return {
+        largeStars: [],
+        mediumStars: [],
+        smallStars: [],
+        coloredStars: [],
+      };
+    }
+
+    const generateStars = (count: number, sizeRange: [number, number]) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        width: Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0],
+        height: Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0],
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        opacity: Math.random() * 0.7 + 0.3,
+        animationDelay: Math.random() * 3,
+        animationDuration: Math.random() * 3 + 2,
+        boxShadow: Math.random() * 4 + 2,
+      }));
+    };
+
+    const generateColoredStars = (count: number) => {
+      return Array.from({ length: count }, (_, i) => {
+        const isBlue = Math.random() > 0.5;
+        return {
+          id: i,
+          width: Math.random() * 2 + 1,
+          height: Math.random() * 2 + 1,
+          top: Math.random() * 100,
+          left: Math.random() * 100,
+          isBlue,
+          opacity: Math.random() * 0.4 + 0.2,
+          animationDelay: Math.random() * 3,
+          animationDuration: Math.random() * 4 + 3,
+          boxShadow: Math.random() * 6 + 3,
+        };
+      });
+    };
+
+    const generateMediumStars = (count: number) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        width: Math.random() * 2 + 0.5,
+        height: Math.random() * 2 + 0.5,
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        opacity: Math.random() * 0.5 + 0.2,
+        animationDelay: Math.random() * 4,
+      }));
+    };
+
+    const generateSmallStars = (count: number) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        opacity: Math.random() * 0.4 + 0.1,
+      }));
+    };
+
+    return {
+      largeStars: generateStars(50, [1, 4]),
+      mediumStars: generateMediumStars(100),
+      smallStars: generateSmallStars(200),
+      coloredStars: generateColoredStars(20),
+    };
+  }, [isMounted]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#141420] to-[#0f0f1a] relative overflow-hidden">
       {/* Starfield Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large stars */}
-        {[...Array(50)].map((_, i) => (
+        {starData.largeStars.map((star) => (
           <div
-            key={`star-large-${i}`}
+            key={`star-large-${star.id}`}
             className="absolute rounded-full bg-white animate-pulse-slow"
             style={{
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              opacity: Math.random() * 0.7 + 0.3,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
-              boxShadow: `0 0 ${Math.random() * 4 + 2}px rgba(255, 255, 255, 0.8)`
+              width: `${star.width}px`,
+              height: `${star.height}px`,
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              opacity: star.opacity,
+              animationDelay: `${star.animationDelay}s`,
+              animationDuration: `${star.animationDuration}s`,
+              boxShadow: `0 0 ${star.boxShadow}px rgba(255, 255, 255, 0.8)`
             }}
           />
         ))}
         
         {/* Medium stars */}
-        {[...Array(100)].map((_, i) => (
+        {starData.mediumStars.map((star) => (
           <div
-            key={`star-medium-${i}`}
+            key={`star-medium-${star.id}`}
             className="absolute rounded-full bg-white"
             style={{
-              width: `${Math.random() * 2 + 0.5}px`,
-              height: `${Math.random() * 2 + 0.5}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              opacity: Math.random() * 0.5 + 0.2,
-              animation: `pulse ${Math.random() * 4 + 3}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 4}s`
+              width: `${star.width}px`,
+              height: `${star.height}px`,
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              opacity: star.opacity,
+              animation: `pulse ${star.animationDelay + 3}s ease-in-out infinite`,
+              animationDelay: `${star.animationDelay}s`
             }}
           />
         ))}
         
         {/* Small stars - distant */}
-        {[...Array(200)].map((_, i) => (
+        {starData.smallStars.map((star) => (
           <div
-            key={`star-small-${i}`}
+            key={`star-small-${star.id}`}
             className="absolute rounded-full bg-white"
             style={{
               width: '1px',
               height: '1px',
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              opacity: Math.random() * 0.4 + 0.1
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              opacity: star.opacity
             }}
           />
         ))}
         
         {/* Colored accent stars - purple/cyan */}
-        {[...Array(20)].map((_, i) => {
-          const isBlue = Math.random() > 0.5;
-          return (
-            <div
-              key={`star-colored-${i}`}
-              className="absolute rounded-full animate-pulse-slow"
-              style={{
-                width: `${Math.random() * 2 + 1}px`,
-                height: `${Math.random() * 2 + 1}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                backgroundColor: isBlue ? '#14F195' : '#9945FF',
-                opacity: Math.random() * 0.4 + 0.2,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${Math.random() * 4 + 3}s`,
-                boxShadow: `0 0 ${Math.random() * 6 + 3}px ${isBlue ? 'rgba(20, 241, 149, 0.6)' : 'rgba(153, 69, 255, 0.6)'}`
-              }}
-            />
-          );
-        })}
+        {starData.coloredStars.map((star) => (
+          <div
+            key={`star-colored-${star.id}`}
+            className="absolute rounded-full animate-pulse-slow"
+            style={{
+              width: `${star.width}px`,
+              height: `${star.height}px`,
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              backgroundColor: star.isBlue ? '#14F195' : '#9945FF',
+              opacity: star.opacity,
+              animationDelay: `${star.animationDelay}s`,
+              animationDuration: `${star.animationDuration}s`,
+              boxShadow: `0 0 ${star.boxShadow}px ${star.isBlue ? 'rgba(20, 241, 149, 0.6)' : 'rgba(153, 69, 255, 0.6)'}`
+            }}
+          />
+        ))}
       </div>
       
       {/* Header */}
@@ -127,7 +202,7 @@ export default function Home() {
             </div>
           </div>
           
-          <WalletMultiButton />
+          <WalletMultiButton className="no-wrap"/>
         </div>
       </header>
 
