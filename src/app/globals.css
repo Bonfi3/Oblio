@@ -17,6 +17,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .no-wrap {
+    white-space: nowrap !important;
+  }
 }
 
 /* Smooth animations */
@@ -138,10 +141,11 @@ body {
   font-family: inherit !important;
   transition: all 0.3s ease !important;
   font-size: 14px !important;
-  width: 110px;
+  width: 130px;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  white-space: nowrap !important;
 }
 
 @media (min-width: 768px) {
@@ -223,7 +227,7 @@ body {
 ul[class*="wallet-adapter-dropdown"] {
   border-radius: 1rem !important;
   backdrop-filter: blur(16px) !important;
-  width: 110px
+  width: 130px;
 }
 
 @media (min-width: 768px) {
@@ -238,6 +242,10 @@ ul[class*="wallet-adapter-dropdown"] {
   ul[class*="wallet-adapter-dropdown"] {
     width: 150px;
   }
+  .wallet-adapter-dropdown-list-active,
+  ul[class*="wallet-adapter-dropdown"] [class*="list-active"] {
+    padding: 0.75rem 1rem !important;
+  }
 }
 
 .wallet-adapter-dropdown-list-item,
@@ -246,7 +254,7 @@ ul[class*="wallet-adapter-dropdown"] {
   border-radius: 0.75rem !important;
   border: 1px solid transparent !important;
   font-weight: 500 !important;
-  padding: 0.75rem 1rem !important;
+  padding: 0 !important;
   cursor: pointer !important;
 }
 
@@ -269,7 +277,6 @@ ul[class*="dropdown"][class*="wallet"] {
 
 ul[class*="dropdown"][class*="wallet"] li {
   border-radius: 0.75rem !important;
-  padding: 0.75rem 1rem !important;
 }
 
 /* Remove number input spinners */

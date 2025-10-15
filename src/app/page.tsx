@@ -104,7 +104,7 @@ export default function Home() {
       
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="mx-auto px-6 py-4 lg:px-10 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Oblio Logo" className="w-8 h-8 flex-shrink-0" />
             <div className="text-2xl font-bold bg-gradient-to-r from-[#9945FF] via-[#C44AFF] to-[#14F195] bg-clip-text text-transparent">
@@ -269,7 +269,7 @@ export default function Home() {
                       <p className="text-gray-400 mb-5 text-xs leading-relaxed">
                         Start earning rewards with confidential staking
                       </p>
-                        <WalletMultiButton className="!w-full !py-3 !rounded-full !font-semibold !text-sm !text-white !bg-gradient-to-r !from-[#9945FF] !to-[#14F195] hover:!from-[#7d38cc] hover:!to-[#10c276] !transition-all !duration-300 !border !border-white/20 hover:!border-white/30 !relative" />
+                        <WalletMultiButton />
                     </div>
                   </div>
                 ) : (
