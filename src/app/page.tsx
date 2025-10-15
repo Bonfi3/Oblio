@@ -240,12 +240,6 @@ export default function Home() {
               {/* Animated gradient overlay */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#9945FF]/5 via-transparent to-[#14F195]/5 animate-gradient"></div>
               
-              {/* Rotating accent lines */}
-              <div className="absolute inset-0 rounded-full animate-spin-slower opacity-10">
-                <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-[#9945FF] to-transparent"></div>
-                <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#14F195] to-transparent"></div>
-              </div>
-              
               <div className="relative z-10 w-full max-w-sm px-6 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
                 {/* Stats bar */}
                 <div className="grid grid-cols-2 gap-3 mb-6 w-full">
@@ -283,45 +277,45 @@ export default function Home() {
                 <div className="flex gap-2 mb-6 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden border border-white/10 ${
                       activeTab === 'stake'
                         ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
                     }`}
                   >
                     {activeTab === 'stake' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
                       </>
                     )}
                     <span className="relative z-10">Stake</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 rounded-full border border-white/10 font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'unstake'
                         ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
                     }`}
                   >
                     {activeTab === 'unstake' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
                       </>
                     )}
                     <span className="relative z-10">Unstake</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 px-3 border border-white/10 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'swap'
                         ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
                     }`}
                   >
                     {activeTab === 'swap' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10"></div>
+                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
                       </>
                     )}
                     <span className="relative z-10">Swap</span>
