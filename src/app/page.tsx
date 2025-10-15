@@ -331,7 +331,7 @@ export default function Home() {
                             Amount to Stake
                           </label>
                           <div className="relative group/input">
-                            <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 transition-opacity"></div>
                             <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                               <input
                                 type="number"
@@ -340,7 +340,7 @@ export default function Home() {
                                 onChange={(e) => setStakeAmount(e.target.value)}
                                 className="w-full bg-transparent px-4 py-3 text-white text-base focus:outline-none"
                               />
-                              <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.1)] rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
+                              <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
                                 MAX
                               </button>
                             </div>
