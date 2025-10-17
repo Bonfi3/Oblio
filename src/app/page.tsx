@@ -317,11 +317,10 @@ export default function Home() {
               
               <div className="relative z-10 w-full max-w-sm md:max-w-md lg:max-w-2xl px-3 md:px-6 lg:px-8 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
                 {/* Stats Display - Futuristic Pods */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 lg:gap-4 mb-4 md:mb-12 lg:mb-20 w-full">
+                <div className="flex gap-2 md:gap-3 lg:gap-4 mb-8 md:mb-12 lg:mb-20 w-full">
                   {/* APY Pod */}
-                  <div className="relative group/stat">
                     {/* Main Pod */}
-                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#9945FF]/40 rounded-2xl p-3 md:p-4 lg:p-6 hover:border-[#9945FF]/70 transition-all duration-300">
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#9945FF]/40 rounded-full sm:rounded-2xl p-2 md:p-3 lg:p-4 hover:border-[#9945FF]/70 transition-all duration-300 flex-1">
                       {/* Pod Header */}
                       <div className="flex items-center justify-center gap-1 md:gap-2 mb-2 md:mb-3 lg:mb-4">
                         <span className="text-xs font-medium text-[#9945FF] uppercase tracking-wider">APY Rate</span>
@@ -332,13 +331,11 @@ export default function Home() {
                         <div className="text-lg md:text-xl lg:text-4xl font-bold bg-gradient-to-br from-white via-[#9945FF] to-[#C44AFF] bg-clip-text text-transparent mb-2">{apy}%</div>
                         <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#9945FF]/30 to-transparent rounded-full"></div>
                       </div>
-                    </div>
                   </div>
 
                   {/* Rewards Pod */}
-                  <div className="relative group/stat">
                     {/* Main Pod */}
-                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#14F195]/25 rounded-2xl p-3 md:p-4 lg:p-6 hover:border-[#14F195]/50 transition-all duration-300">
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#14F195]/25 rounded-full sm:rounded-2xl p-2 md:p-3 lg:p-4 hover:border-[#14F195]/50 transition-all duration-300 flex-1">
                       {/* Pod Header */}
                       <div className="flex items-center justify-center gap-1 md:gap-2 mb-2 md:mb-3 lg:mb-4">
                         <span className="text-xs font-medium text-[#14F195]/70 uppercase tracking-wider">Est. Rewards</span>
@@ -350,7 +347,6 @@ export default function Home() {
                         <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#14F195]/30 to-transparent rounded-full"></div>
                       </div>
                     </div>
-                  </div>
                 </div>
 
                 {/* Tab Content */}
