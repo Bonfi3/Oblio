@@ -486,61 +486,70 @@ export default function Home() {
                     {activeTab === 'swap' && (
                         <div className="space-y-5">
                         <div className="space-y-2">
-                          {/* From Token */}
-                          <div className="relative group/input">
-                            <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
-                            <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3 hover:border-[#9945FF]/50 transition-all">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
-                                    {!isSwapped ? (
-                                      <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
-                                    ) : (
-                                      <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
-                                    )}
+                          {/* Token Swap Layout - Mobile vertical with arrows on right */}
+                          <div className="flex gap-2">
+                            {/* Left Column - Inputs */}
+                            <div className="flex-1 space-y-2">
+                              {/* From Token */}
+                              <div className="relative group/input">
+                                <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                                <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3 hover:border-[#9945FF]/50 transition-all">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
+                                        {!isSwapped ? (
+                                          <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
+                                        ) : (
+                                          <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
+                                        )}
+                                      </div>
+                                      <span className="font-bold text-white text-sm">{!isSwapped ? 'SOL' : 'oSOL'}</span>
+                                    </div>
+                                    <input
+                                      type="number"
+                                      placeholder="0.00"
+                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right"
+                                    />
                                   </div>
-                                  <span className="font-bold text-white text-sm">{!isSwapped ? 'SOL' : 'oSOL'}</span>
                                 </div>
-                                <input
-                                  type="number"
-                                  placeholder="0.00"
-                                  className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right"
-                                />
+                              </div>
+
+                              {/* To Token */}
+                              <div className="relative group/input">
+                                <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 transition-opacity"></div>
+                                <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3 transition-all">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
+                                        {!isSwapped ? (
+                                          <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
+                                        ) : (
+                                          <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
+                                        )}
+                                      </div>
+                                      <span className="font-bold text-white text-sm">{!isSwapped ? 'oSOL' : 'SOL'}</span>
+                                    </div>
+                                    <input
+                                      type="number"
+                                      placeholder="0.00"
+                                      readOnly
+                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          {/* Swap Icon */}
-                          <div className="flex justify-center">
-                            <button
-                              onClick={() => setIsSwapped(!isSwapped)}
-                              className="relative w-10 h-10 bg-[rgba(153,69,255,0.1)] border border-white/20 rounded-full flex items-center justify-center hover:bg-[rgba(153,69,255,0.1)] transition-all group/swap"
-                            >
-                              <svg className="w-5 h-5 text-white group-hover/swap:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                              </svg>
-                            </button>
-                          </div>
-
-                          {/* To Token */}
-                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
-                                  {!isSwapped ? (
-                                    <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
-                                  ) : (
-                                    <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
-                                  )}
-                                </div>
-                                <span className="font-bold text-white text-sm">{!isSwapped ? 'oSOL' : 'SOL'}</span>
-                              </div>
-                              <input
-                                type="number"
-                                placeholder="0.00"
-                                readOnly
-                                className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
-                              />
+                            {/* Right Column - Swap Icon */}
+                            <div className="flex flex-col justify-center">
+                              <button
+                                onClick={() => setIsSwapped(!isSwapped)}
+                                className="relative w-10 h-10 bg-[rgba(153,69,255,0.1)] border border-white/20 rounded-full flex items-center justify-center hover:bg-[rgba(153,69,255,0.1)] transition-all group/swap"
+                              >
+                                <svg className="w-5 h-5 text-white group-hover/swap:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+                              </button>
                             </div>
                           </div>
                         </div>
