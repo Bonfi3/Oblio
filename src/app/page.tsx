@@ -489,7 +489,7 @@ export default function Home() {
                           {/* Token Swap Layout - Mobile vertical with arrows on right */}
                           <div className="flex gap-2">
                             {/* Left Column - Inputs */}
-                            <div className="flex-1 space-y-2">
+                            <div className="flex-1 space-y-3">
                               {/* From Token */}
                               <div className="relative group/input">
                                 <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
