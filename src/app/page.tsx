@@ -190,12 +190,12 @@ export default function Home() {
             </span>
           </div>
           
-          {/* Confidential Liquid Staking Title - Desktop only */}
-          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center">
+          {/* Confidential Liquid Staking Title - Header only (hidden on mobile) */}
+          <div className="hidden sm:flex items-center justify-center">
             <div className="relative group/title">
               {/* <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div> */}
-              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
-                <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
+              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1 md:px-6 md:py-2">
+                <h1 className="text-xs md:text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
                   Confidential Liquid Staking
                 </h1>
               </div>
@@ -207,20 +207,20 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center h-screen px-4">
-        <div className="w-full flex flex-col items-center justify-center">
-          {/* Confidential Liquid Staking Title - Mobile only */}
-          <div className="md:hidden flex items-center justify-center">
+      <main className="flex items-center justify-center h-screen px-2 md:px-4">
+        <div className="w-full flex flex-col items-center justify-center relative">
+          {/* Confidential Liquid Staking Title - Mobile only (above circle) */}
+          <div className="sm:hidden flex items-center justify-center absolute -top-16 left-1/2 -translate-x-1/2">
             <div className="relative group/title">
               {/* <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/20 to-[#14F195]/20 rounded-full blur-sm"></div> */}
-              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-6 py-2">
-                <h1 className="text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
+              <div className="relative bg-black/40 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1 md:px-6 md:py-2">
+                <h1 className="text-xs md:text-sm font-semibold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-center tracking-tight whitespace-nowrap">
                   Confidential Liquid Staking
                 </h1>
               </div>
             </div>
           </div>
-          
+
           {/* Card */}
           <div className="relative group">
             {/* Outer rotating glow effect */}
@@ -229,7 +229,7 @@ export default function Home() {
             </div>
             
             {/* SVG Rotating Waves - Logo Style */}
-            <div className="absolute inset-0 w-[1100px] h-[1100px] animate-spin-slow">
+            <div className="absolute inset-0 w-[600px] h-[600px] sm:w-[650px] sm:h-[650px] md:w-[750px] md:h-[750px] lg:w-[1000px] lg:h-[1000px] xl:w-[1100px] xl:h-[1100px] animate-spin-slow">
               <svg viewBox="0 0 600 600" className="w-full h-full">
                 <defs>
                   <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -277,7 +277,7 @@ export default function Home() {
             </div>
             
             {/* Counter-rotating inner waves */}
-            <div className="absolute inset-0 w-[1100px] h-[1100px] animate-spin-reverse">
+            <div className="absolute inset-0 w-[600px] h-[600px] sm:w-[650px] sm:h-[650px] md:w-[750px] md:h-[750px] lg:w-[1000px] lg:h-[1000px] xl:w-[1100px] xl:h-[1100px] animate-spin-reverse">
               <svg viewBox="0 0 600 600" className="w-full h-full">
                 {/* Inner wave accent - Top Left */}
                 <path
@@ -305,7 +305,7 @@ export default function Home() {
             <div className="absolute inset-4 rounded-full border-2 border-[#9945FF]/20 animate-pulse-slow"></div>
             
             {/* Main card */}
-            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-12 shadow-2xl w-[1100px] h-[1100px] flex items-center justify-center overflow-hidden animate-spin-grow-in" style={{
+            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-6 md:p-8 lg:p-10 xl:p-12 shadow-2xl w-[600px] h-[600px] sm:w-[650px] sm:h-[650px] md:w-[750px] md:h-[750px] lg:w-[1000px] lg:h-[1000px] xl:w-[1100px] xl:h-[1100px] flex items-center justify-center overflow-hidden animate-spin-grow-in" style={{
               border: '3px solid transparent',
               backgroundImage: 'linear-gradient(#1a1a2e, #16162a), conic-gradient(from 0deg, #9945FF, #C44AFF, #14F195, #C44AFF, #9945FF)',
               backgroundOrigin: 'border-box',
@@ -315,27 +315,22 @@ export default function Home() {
               {/* Animated gradient overlay */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#9945FF]/5 via-transparent to-[#14F195]/5 animate-gradient"></div>
               
-              <div className="relative z-10 w-full max-w-2xl px-8 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
+              <div className="relative z-10 w-full max-w-sm md:max-w-md lg:max-w-2xl px-3 md:px-6 lg:px-8 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
                 {/* Stats Display - Futuristic Pods */}
-                <div className="grid grid-cols-2 gap-4 mb-8 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 lg:gap-4 mb-4 md:mb-6 lg:mb-8 w-full">
                   {/* APY Pod */}
                   <div className="relative group/stat">
-                    {/* Outer Glow Ring */}
-                    <div className="absolute inset-0 rounded-full blur-xl opacity-30 group-hover/stat:opacity-50 transition-opacity">
-                      <div className="w-full h-full bg-gradient-to-br from-[#9945FF] via-[#C44AFF] to-[#14F195] rounded-full animate-pulse-slow"></div>
-                    </div>
-
                     {/* Main Pod */}
-                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#9945FF]/40 rounded-2xl p-6 hover:border-[#9945FF]/70 transition-all duration-300">
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#9945FF]/40 rounded-2xl p-3 md:p-4 lg:p-6 hover:border-[#9945FF]/70 transition-all duration-300">
                       {/* Pod Header */}
-                      <div className="flex items-center justify-center gap-2 mb-4">
+                      <div className="flex items-center justify-center gap-1 md:gap-2 mb-2 md:mb-3 lg:mb-4">
                         <div className="w-2 h-2 bg-[#9945FF] rounded-full animate-pulse"></div>
                         <span className="text-xs font-medium text-[#9945FF] uppercase tracking-wider">APY Rate</span>
                       </div>
 
                       {/* Central Value Display */}
                       <div className="text-center">
-                        <div className="text-4xl font-bold bg-gradient-to-br from-white via-[#9945FF] to-[#C44AFF] bg-clip-text text-transparent mb-2">{apy}%</div>
+                        <div className="text-lg md:text-xl lg:text-4xl font-bold bg-gradient-to-br from-white via-[#9945FF] to-[#C44AFF] bg-clip-text text-transparent mb-2">{apy}%</div>
                         <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#9945FF]/30 to-transparent rounded-full"></div>
                       </div>
                     </div>
@@ -343,22 +338,17 @@ export default function Home() {
 
                   {/* Rewards Pod */}
                   <div className="relative group/stat">
-                    {/* Outer Glow Ring */}
-                    <div className="absolute inset-0 rounded-full blur-xl opacity-30 group-hover/stat:opacity-50 transition-opacity">
-                      <div className="w-full h-full bg-gradient-to-br from-[#14F195] via-[#9945FF] to-[#C44AFF] rounded-full animate-pulse-slow"></div>
-                    </div>
-
                     {/* Main Pod */}
-                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#14F195]/40 rounded-2xl p-6 hover:border-[#14F195]/70 transition-all duration-300">
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#14F195]/25 rounded-2xl p-3 md:p-4 lg:p-6 hover:border-[#14F195]/50 transition-all duration-300">
                       {/* Pod Header */}
-                      <div className="flex items-center justify-center gap-2 mb-4">
+                      <div className="flex items-center justify-center gap-1 md:gap-2 mb-2 md:mb-3 lg:mb-4">
                         <div className="w-2 h-2 bg-[#14F195] rounded-full animate-pulse"></div>
-                        <span className="text-xs font-medium text-[#14F195] uppercase tracking-wider">Est. Rewards</span>
+                        <span className="text-xs font-medium text-[#14F195]/70 uppercase tracking-wider">Est. Rewards</span>
                       </div>
 
                       {/* Central Value Display */}
                       <div className="text-center">
-                        <div className="text-3xl font-bold bg-gradient-to-br from-white via-[#14F195] to-[#9945FF] bg-clip-text text-transparent mb-2">{estimatedRewards}</div>
+                        <div className="text-base md:text-lg lg:text-3xl font-bold bg-gradient-to-br from-white via-[#14F195]/60 to-[#9945FF]/60 bg-clip-text text-transparent mb-2">{estimatedRewards}</div>
                         <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#14F195]/30 to-transparent rounded-full"></div>
                       </div>
                     </div>
@@ -367,12 +357,12 @@ export default function Home() {
 
                 {/* Tab Content */}
                 {!connected ? (
-                  <div className="space-y-5 w-full mt-10">
+                  <div className="space-y-3 md:space-y-5 w-full mt-6 md:mt-10">
                     <div className="text-center">
-                      <h2 className="text-2xl font-bold text-white mb-3">
+                      <h2 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-3">
                         Connect Wallet
                       </h2>
-                      <p className="text-gray-400 mb-6 text-sm leading-relaxed">
+                      <p className="text-gray-400 mb-4 md:mb-6 text-xs md:text-sm leading-relaxed">
                         Start earning rewards with confidential staking
                       </p>
                         <WalletMultiButton />
@@ -380,10 +370,10 @@ export default function Home() {
                   </div>
                 ) : (
                   <>
-                <div className="flex gap-3 mb-8 w-full">
+                <div className="flex gap-2 md:gap-3 mb-6 md:mb-8 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-3.5 px-4 rounded-full font-semibold text-sm transition-all duration-300 relative overflow-hidden border border-white/10 ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden border border-white/10 ${
                       activeTab === 'stake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -398,7 +388,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-3.5 px-4 rounded-full border border-white/10 font-semibold text-sm transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full border border-white/10 font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'unstake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -413,7 +403,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-3.5 px-4 border border-white/10 rounded-full font-semibold text-sm transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 border border-white/10 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'swap'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
