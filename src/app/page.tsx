@@ -104,7 +104,7 @@ export default function Home() {
   }, [isMounted]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#141420] to-[#0f0f1a] relative overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-[#0a0a0f] via-[#141420] to-[#0f0f1a] relative overflow-hidden">
       {/* Starfield Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large stars */}
@@ -207,8 +207,8 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-screen px-4 pt-12 md:pt-20">
-        <div className="w-full flex flex-col items-center justify-center gap-4 md:gap-0">
+      <main className="flex items-center justify-center h-screen px-4">
+        <div className="w-full flex flex-col items-center justify-center">
           {/* Confidential Liquid Staking Title - Mobile only */}
           <div className="md:hidden flex items-center justify-center">
             <div className="relative group/title">
@@ -229,7 +229,7 @@ export default function Home() {
             </div>
             
             {/* SVG Rotating Waves - Logo Style */}
-            <div className="absolute inset-0 w-[600px] h-[600px] animate-spin-slow">
+            <div className="absolute inset-0 w-[1100px] h-[1100px] animate-spin-slow">
               <svg viewBox="0 0 600 600" className="w-full h-full">
                 <defs>
                   <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -277,7 +277,7 @@ export default function Home() {
             </div>
             
             {/* Counter-rotating inner waves */}
-            <div className="absolute inset-0 w-[600px] h-[600px] animate-spin-reverse">
+            <div className="absolute inset-0 w-[1100px] h-[1100px] animate-spin-reverse">
               <svg viewBox="0 0 600 600" className="w-full h-full">
                 {/* Inner wave accent - Top Left */}
                 <path
@@ -305,7 +305,7 @@ export default function Home() {
             <div className="absolute inset-4 rounded-full border-2 border-[#9945FF]/20 animate-pulse-slow"></div>
             
             {/* Main card */}
-            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-12 shadow-2xl w-[600px] h-[600px] flex items-center justify-center overflow-hidden animate-spin-grow-in" style={{
+            <div className="relative bg-gradient-to-b from-[#1a1a2e]/90 to-[#16162a]/90 backdrop-blur-xl rounded-full p-12 shadow-2xl w-[1100px] h-[1100px] flex items-center justify-center overflow-hidden animate-spin-grow-in" style={{
               border: '3px solid transparent',
               backgroundImage: 'linear-gradient(#1a1a2e, #16162a), conic-gradient(from 0deg, #9945FF, #C44AFF, #14F195, #C44AFF, #9945FF)',
               backgroundOrigin: 'border-box',
@@ -315,21 +315,52 @@ export default function Home() {
               {/* Animated gradient overlay */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#9945FF]/5 via-transparent to-[#14F195]/5 animate-gradient"></div>
               
-              <div className="relative z-10 w-full max-w-sm px-6 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
-                {/* Stats bar */}
-                <div className="grid grid-cols-2 gap-3 mb-6 w-full">
+              <div className="relative z-10 w-full max-w-2xl px-8 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
+                {/* Stats Display - Futuristic Pods */}
+                <div className="grid grid-cols-2 gap-4 mb-8 w-full">
+                  {/* APY Pod */}
                   <div className="relative group/stat">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#9945FF]/20 to-transparent rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
-                    <div className="relative bg-black/40 backdrop-blur-sm border border-[#9945FF]/30 rounded-full p-4 hover:border-[#9945FF]/50 transition-all aspect-square flex flex-col items-center justify-center">
-                      <div className="text-[10px] font-medium text-[#9945FF] mb-0.5 uppercase tracking-wider">APY</div>
-                      <div className="text-2xl font-bold bg-gradient-to-r from-white to-[#9945FF] bg-clip-text text-transparent">{apy}%</div>
+                    {/* Outer Glow Ring */}
+                    <div className="absolute inset-0 rounded-full blur-xl opacity-30 group-hover/stat:opacity-50 transition-opacity">
+                      <div className="w-full h-full bg-gradient-to-br from-[#9945FF] via-[#C44AFF] to-[#14F195] rounded-full animate-pulse-slow"></div>
+                    </div>
+
+                    {/* Main Pod */}
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#9945FF]/40 rounded-2xl p-6 hover:border-[#9945FF]/70 transition-all duration-300">
+                      {/* Pod Header */}
+                      <div className="flex items-center justify-center gap-2 mb-4">
+                        <div className="w-2 h-2 bg-[#9945FF] rounded-full animate-pulse"></div>
+                        <span className="text-xs font-medium text-[#9945FF] uppercase tracking-wider">APY Rate</span>
+                      </div>
+
+                      {/* Central Value Display */}
+                      <div className="text-center">
+                        <div className="text-4xl font-bold bg-gradient-to-br from-white via-[#9945FF] to-[#C44AFF] bg-clip-text text-transparent mb-2">{apy}%</div>
+                        <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#9945FF]/30 to-transparent rounded-full"></div>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Rewards Pod */}
                   <div className="relative group/stat">
-                  <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm group-hover/stat:blur-md transition-all"></div>
-                  <div className="relative bg-black/40 backdrop-blur-sm border border-[#9945FF]/30 rounded-full p-4 hover:border-[#9945FF]/50 transition-all aspect-square flex flex-col items-center justify-center">
-                  <div className="text-[10px] font-medium text-[#9945FF] mb-0.5 uppercase tracking-wider text-center">Rewards</div>
-                      <div className="text-xl font-bold bg-gradient-to-r from-white to-[#9945FF] bg-clip-text text-transparent">{estimatedRewards}</div>
+                    {/* Outer Glow Ring */}
+                    <div className="absolute inset-0 rounded-full blur-xl opacity-30 group-hover/stat:opacity-50 transition-opacity">
+                      <div className="w-full h-full bg-gradient-to-br from-[#14F195] via-[#9945FF] to-[#C44AFF] rounded-full animate-pulse-slow"></div>
+                    </div>
+
+                    {/* Main Pod */}
+                    <div className="relative bg-gradient-to-br from-black/50 to-[#1a1a2e]/60 backdrop-blur-sm border border-[#14F195]/40 rounded-2xl p-6 hover:border-[#14F195]/70 transition-all duration-300">
+                      {/* Pod Header */}
+                      <div className="flex items-center justify-center gap-2 mb-4">
+                        <div className="w-2 h-2 bg-[#14F195] rounded-full animate-pulse"></div>
+                        <span className="text-xs font-medium text-[#14F195] uppercase tracking-wider">Est. Rewards</span>
+                      </div>
+
+                      {/* Central Value Display */}
+                      <div className="text-center">
+                        <div className="text-3xl font-bold bg-gradient-to-br from-white via-[#14F195] to-[#9945FF] bg-clip-text text-transparent mb-2">{estimatedRewards}</div>
+                        <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#14F195]/30 to-transparent rounded-full"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -338,10 +369,10 @@ export default function Home() {
                 {!connected ? (
                   <div className="space-y-5 w-full mt-10">
                     <div className="text-center">
-                      <h2 className="text-lg font-bold text-white mb-2">
+                      <h2 className="text-2xl font-bold text-white mb-3">
                         Connect Wallet
                       </h2>
-                      <p className="text-gray-400 mb-5 text-xs leading-relaxed">
+                      <p className="text-gray-400 mb-6 text-sm leading-relaxed">
                         Start earning rewards with confidential staking
                       </p>
                         <WalletMultiButton />
@@ -349,10 +380,10 @@ export default function Home() {
                   </div>
                 ) : (
                   <>
-                <div className="flex gap-2 mb-6 w-full">
+                <div className="flex gap-3 mb-8 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-2.5 px-3 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden border border-white/10 ${
+                    className={`flex-1 py-3.5 px-4 rounded-full font-semibold text-sm transition-all duration-300 relative overflow-hidden border border-white/10 ${
                       activeTab === 'stake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -367,7 +398,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-2.5 px-3 rounded-full border border-white/10 font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-3.5 px-4 rounded-full border border-white/10 font-semibold text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'unstake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -382,7 +413,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-2.5 px-3 border border-white/10 rounded-full font-semibold text-xs transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-3.5 px-4 border border-white/10 rounded-full font-semibold text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'swap'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -402,7 +433,7 @@ export default function Home() {
                     {activeTab === 'stake' && (
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-xs font-medium text-gray-300 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-3">
                             Amount to Stake
                           </label>
                           <div className="relative group/input">
@@ -413,21 +444,21 @@ export default function Home() {
                                 placeholder="0.00"
                                 value={stakeAmount}
                                 onChange={(e) => setStakeAmount(e.target.value)}
-                                className="w-full bg-transparent px-4 py-3 text-white text-base focus:outline-none"
+                                className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
                               />
                               <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
                                 MAX
                               </button>
                             </div>
                           </div>
-                          <div className="flex justify-between mt-1.5 text-[10px] text-gray-500">
+                          <div className="flex justify-between mt-2 text-xs text-gray-500">
                             <span>Balance: 0.00 SOL</span>
                             <span>≈ $0.00</span>
                           </div>
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 border border-white/10  rounded-full font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Stake SOL
                           </button>
                         </div>
@@ -438,7 +469,7 @@ export default function Home() {
                     {activeTab === 'unstake' && (
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-xs font-medium text-gray-300 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-3">
                             Staked Amount
                           </label>
                           <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden pointer-events-none">
@@ -446,17 +477,17 @@ export default function Home() {
                               type="text"
                               value="0.00"
                               readOnly
-                              className="w-full bg-transparent px-4 py-3 text-white text-base cursor-not-allowed opacity-70 outline-none"
+                              className="w-full bg-transparent px-5 py-4 text-white text-lg cursor-not-allowed opacity-70 outline-none"
                             />
                           </div>
-                          <div className="flex justify-between mt-1.5 text-[10px] text-gray-500">
+                          <div className="flex justify-between mt-2 text-xs text-gray-500">
                             <span>Your Stake: 0.00 SOL</span>
                             <span>Rewards: 0.00 SOL</span>
                           </div>
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full border border-white/10 rounded-full py-3 font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Unstake
                           </button>
                         </div>
@@ -465,27 +496,27 @@ export default function Home() {
 
                     {/* Swap LSTs Tab */}
                     {activeTab === 'swap' && (
-                      <div className="space-y-4">
-                        <div className="space-y-1.5">
+                        <div className="space-y-5">
+                        <div className="space-y-2">
                           {/* From Token */}
                           <div className="relative group/input">
                             <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
-                            <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-2 hover:border-[#9945FF]/50 transition-all">
+                            <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3 hover:border-[#9945FF]/50 transition-all">
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-1.5">
-                                  <div className="w-5 h-5 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
                                     {!isSwapped ? (
-                                      <img src="/solanaLogoMark.png" alt="Solana" className="w-2.5 h-2.5" />
+                                      <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
                                     ) : (
-                                      <img src="/logo.png" alt="Oblio" className="w-3.5 h-3.5" />
+                                      <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
                                     )}
                                   </div>
-                                  <span className="font-bold text-white text-xs">{!isSwapped ? 'SOL' : 'oSOL'}</span>
+                                  <span className="font-bold text-white text-sm">{!isSwapped ? 'SOL' : 'oSOL'}</span>
                                 </div>
                                 <input
                                   type="number"
                                   placeholder="0.00"
-                                  className="bg-transparent text-white text-sm font-semibold focus:outline-none w-full text-right"
+                                  className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right"
                                 />
                               </div>
                             </div>
@@ -493,34 +524,34 @@ export default function Home() {
 
                           {/* Swap Icon */}
                           <div className="flex justify-center">
-                            <button 
+                            <button
                               onClick={() => setIsSwapped(!isSwapped)}
-                              className="relative w-8 h-8 bg-[rgba(153,69,255,0.1)] border border-white/20 rounded-full flex items-center justify-center hover:bg-[rgba(153,69,255,0.1)] transition-all group/swap"
+                              className="relative w-10 h-10 bg-[rgba(153,69,255,0.1)] border border-white/20 rounded-full flex items-center justify-center hover:bg-[rgba(153,69,255,0.1)] transition-all group/swap"
                             >
-                              <svg className="w-4 h-4 text-white group-hover/swap:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-5 h-5 text-white group-hover/swap:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                               </svg>
                             </button>
                           </div>
 
                           {/* To Token */}
-                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-2">
+                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-4 py-3">
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1.5">
-                                <div className="w-5 h-5 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 rounded-full bg-[rgba(153,69,255,0.1)] border border-white/20 flex items-center justify-center">
                                   {!isSwapped ? (
-                                    <img src="/logo.png" alt="Oblio" className="w-3.5 h-3.5" />
+                                    <img src="/logo.png" alt="Oblio" className="w-4 h-4" />
                                   ) : (
-                                    <img src="/solanaLogoMark.png" alt="Solana" className="w-2.5 h-2.5" />
+                                    <img src="/solanaLogoMark.png" alt="Solana" className="w-3 h-3" />
                                   )}
                                 </div>
-                                <span className="font-bold text-white text-xs">{!isSwapped ? 'oSOL' : 'SOL'}</span>
+                                <span className="font-bold text-white text-sm">{!isSwapped ? 'oSOL' : 'SOL'}</span>
                               </div>
                               <input
                                 type="number"
                                 placeholder="0.00"
                                 readOnly
-                                className="bg-transparent text-white text-sm font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
+                                className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
                               />
                             </div>
                           </div>
@@ -528,7 +559,7 @@ export default function Home() {
 
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-3 border border-white/10 rounded-full font-bold text-sm text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full py-4 border border-white/10 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
                             Swap
                           </button>
                         </div>
