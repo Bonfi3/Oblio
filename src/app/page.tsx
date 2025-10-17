@@ -379,7 +379,7 @@ export default function Home() {
                   >
                     {activeTab === 'stake' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/10 via-[#C44AFF]/5 to-[#14F195]/10 opacity-0 group-hover:opacity-100"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/15 to-[#14F195]/20 opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Stake</span>
@@ -394,7 +394,7 @@ export default function Home() {
                   >
                     {activeTab === 'unstake' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#14F195]/10 via-[#9945FF]/5 to-[#C44AFF]/10 opacity-0 group-hover:opacity-100"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#14F195]/20 via-[#9945FF]/15 to-[#C44AFF]/20 opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Unstake</span>
@@ -409,7 +409,7 @@ export default function Home() {
                   >
                     {activeTab === 'swap' && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/10 via-[#C44AFF]/5 to-[#14F195]/10 opacity-0 group-hover:opacity-100"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/20 via-[#C44AFF]/15 to-[#14F195]/20 opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Swap</span>
