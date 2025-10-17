@@ -317,7 +317,7 @@ export default function Home() {
               
               <div className="relative z-10 w-full max-w-sm md:max-w-md lg:max-w-2xl px-3 md:px-6 lg:px-8 flex flex-col items-center justify-center opacity-0 animate-bubble-in" style={{ animationDelay: '1900ms' }}>
                 {/* Stats Display - Futuristic Pods */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-3 lg:gap-4 mb-4 md:mb-12 lg:mb-20 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 lg:gap-4 mb-4 md:mb-12 lg:mb-20 w-full">
                   {/* APY Pod */}
                   <div className="relative group/stat">
                     {/* Main Pod */}
@@ -379,7 +379,7 @@ export default function Home() {
                   >
                     {activeTab === 'stake' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/10 via-[#C44AFF]/5 to-[#14F195]/10 opacity-0 group-hover:opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Stake</span>
@@ -394,7 +394,7 @@ export default function Home() {
                   >
                     {activeTab === 'unstake' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#14F195]/10 via-[#9945FF]/5 to-[#C44AFF]/10 opacity-0 group-hover:opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Unstake</span>
@@ -409,7 +409,7 @@ export default function Home() {
                   >
                     {activeTab === 'swap' && (
                       <>
-                        <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)]"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#9945FF]/10 via-[#C44AFF]/5 to-[#14F195]/10 opacity-0 group-hover:opacity-100"></div>
                       </>
                     )}
                     <span className="relative z-10">Swap</span>
@@ -446,7 +446,7 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
                             Stake SOL
                           </button>
                         </div>
@@ -475,7 +475,7 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
                             Unstake
                           </button>
                         </div>
@@ -547,7 +547,7 @@ export default function Home() {
 
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-4 border border-white/10 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.1)] hover:bg-[rgba(153,69,255,0.1)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full py-4 border border-white/10 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
                             Swap
                           </button>
                         </div>
