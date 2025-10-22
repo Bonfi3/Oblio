@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-//import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import dynamic from 'next/dynamic';
-import { useWallet } from '@solana/wallet-adapter-react';
+// Import useConnection to get the RPC connection object
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+// Import the mint and burn functions from your utility file
+import { stake, unstake } from '../utils/solana';
 
 
 const WalletMultiButton = dynamic(
@@ -12,10 +14,66 @@ const WalletMultiButton = dynamic(
 );
 export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
-  const [stakeAmount, setStakeAmount] = useState('');
+  // Set the initial stake amount to 1 SOL as requested
+  const [stakeAmount, setStakeAmount] = useState('1');
+  // Add state for the unstake/burn amount
+  const [unstakeAmount, setUnstakeAmount] = useState('');
   const [isSwapped, setIsSwapped] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { connected } = useWallet();
+
+  // Get the wallet adapter state and the current connection
+  const wallet = useWallet();
+  const { connection } = useConnection();
+  const { connected } = wallet;
+
+  // --- HANDLER FUNCTIONS ---
+
+  // Function to handle staking SOL and minting obSOL
+  const handleStake = async () => {
+    if (!connected || !wallet) {
+      alert('Please connect your wallet first.');
+      return;
+    }
+    const amount = parseFloat(stakeAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert('Please enter a valid amount to stake.');
+      return;
+    }
+
+    try {
+      console.log(`Staking ${amount} SOL...`);
+      const signature = await stake(connection, wallet, amount);
+      alert(`Stake successful! Transaction signature: ${signature}`);
+      setStakeAmount(''); // Clear input on success
+    } catch (error) {
+      console.error('Staking failed:', error);
+      alert('Staking failed. Please check the console for more details.');
+    }
+  };
+
+  // Function to handle unstaking (burning obSOL to get SOL back)
+  const handleUnstake = async () => {
+    if (!connected || !wallet) {
+      alert('Please connect your wallet first.');
+      return;
+    }
+    const amount = parseFloat(unstakeAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert('Please enter a valid amount to unstake.');
+      return;
+    }
+
+    try {
+      console.log(`Unstaking ${amount} obSOL...`);
+      const signature = await unstake(connection, wallet, amount);
+      alert(`Unstake successful! You received ${amount * 1.2} SOL. Transaction signature: ${signature}`);
+      setUnstakeAmount(''); // Clear input on success
+    } catch (error) {
+      console.error('Unstaking failed:', error);
+      alert('Unstaking failed. Please check the console for more details.');
+    }
+  };
+
 
   // Ensure component is mounted before generating random values
   useEffect(() => {
@@ -442,7 +500,11 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
+                          {/* UPDATED: Added onClick handler to the Stake button */}
+                          <button
+                            onClick={handleStake}
+                            className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl"
+                          >
                             Stake SOL
                           </button>
                         </div>
@@ -454,24 +516,32 @@ export default function Home() {
                       <div className="space-y-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-3">
-                            Staked Amount
+                            Amount to Unstake (obSOL)
                           </label>
-                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden pointer-events-none">
+                          {/* UPDATED: Made the input interactive */}
+                          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                             <input
-                              type="text"
-                              value="0.00"
-                              readOnly
-                              className="w-full bg-transparent px-5 py-4 text-white text-lg cursor-not-allowed opacity-70 outline-none"
+                              type="number"
+                              placeholder="0.00"
+                              value={unstakeAmount}
+                              onChange={(e) => setUnstakeAmount(e.target.value)}
+                              className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
                             />
+                             <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
+                                MAX
+                              </button>
                           </div>
                           <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>Your Stake: 0.00 SOL</span>
-                            <span>Rewards: 0.00 SOL</span>
+                            <span>Your obSOL Balance: 0.00</span>
                           </div>
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
+                          {/* UPDATED: Added onClick handler to the Unstake button */}
+                          <button
+                            onClick={handleUnstake}
+                            className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl"
+                          >
                             Unstake
                           </button>
                         </div>
