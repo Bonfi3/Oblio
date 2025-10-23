@@ -34,7 +34,7 @@ export default function Home() {
   const { connection } = useConnection();
   const { connected } = wallet;
   // Get toast functionality
-  const { showToast } = useToast();
+  const { showToast, removeToast } = useToast();
 
   // --- HANDLER FUNCTIONS ---
 
@@ -70,10 +70,13 @@ export default function Home() {
       return;
     }
 
+    const loadingId = showToast(`Staking ${amount} SOL...`, 'loading', Infinity);
     try {
       console.log(`Staking ${amount} SOL...`);
       const signature = await stake(connection, wallet, amount);
-      showToast(`Stake successful! Transaction signature: ${signature}`, 'success');
+      removeToast(loadingId);
+      const shortSig = `${signature.slice(0, 4)}...`;
+      showToast(`Stake successful! Tx: ${shortSig}`, 'success', 5000, signature);
       setStakeAmount(''); // Clear input on success
       // Refresh balances immediately after successful transaction
       await fetchBalances();
@@ -101,10 +104,13 @@ export default function Home() {
       return;
     }
 
+    const loadingId = showToast(`Unstaking ${amount} obSOL...`, 'loading', Infinity);
     try {
       console.log(`Unstaking ${amount} obSOL...`);
       const signature = await unstake(connection, wallet, amount);
-      showToast(`Unstake successful! You received ${amount * 1.2} SOL. Transaction signature: ${signature}`, 'success');
+      removeToast(loadingId);
+      const shortSig = `${signature.slice(0, 4)}...`;
+      showToast(`Unstake successful! You received ${amount * 1.2} SOL. Tx: ${shortSig}`, 'success', 5000, signature);
       setUnstakeAmount(''); // Clear input on success
       // Refresh balances immediately after successful transaction
       await fetchBalances();
@@ -567,7 +573,7 @@ export default function Home() {
                                 placeholder="0.00"
                                 value={stakeAmount}
                                 onChange={(e) => setStakeAmount(normalizeDecimalInput(e.target.value))}
-                                className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
+                                className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none placeholder:text-gray-400"
                               />
                               <button 
                                 onClick={handleMaxStake}
@@ -608,7 +614,7 @@ export default function Home() {
                               placeholder="0.00"
                               value={unstakeAmount}
                               onChange={(e) => setUnstakeAmount(normalizeDecimalInput(e.target.value))}
-                              className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
+                              className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none placeholder:text-gray-400"
                             />
                              <button 
                                onClick={handleMaxUnstake}
@@ -658,7 +664,7 @@ export default function Home() {
                                     <input
                                       type="number"
                                       placeholder="0.00"
-                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right"
+                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right placeholder:text-gray-400"
                                     />
                                   </div>
                                 </div>
@@ -683,7 +689,7 @@ export default function Home() {
                                       type="number"
                                       placeholder="0.00"
                                       readOnly
-                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70"
+                                      className="bg-transparent text-white text-base font-semibold focus:outline-none w-full text-right cursor-not-allowed opacity-70 placeholder:text-gray-400"
                                     />
                                   </div>
                                 </div>

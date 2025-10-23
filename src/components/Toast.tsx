@@ -5,8 +5,9 @@ import React, { useState, useEffect } from 'react';
 export interface ToastProps {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   duration?: number;
+  copyText?: string;
   onClose: (id: string) => void;
 }
 
@@ -15,21 +16,28 @@ export const Toast: React.FC<ToastProps> = ({
   message,
   type,
   duration = 4000,
+  copyText,
   onClose,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Animate in
     setIsVisible(true);
 
-    // Auto close after duration
-    const timer = setTimeout(() => {
-      handleClose();
-    }, duration);
+    // Auto close after duration if finite and > 0
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (Number.isFinite(duration) && (duration as number) > 0) {
+      timer = setTimeout(() => {
+        handleClose();
+      }, duration);
+    }
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [duration]);
 
   const handleClose = () => {
@@ -46,6 +54,13 @@ export const Toast: React.FC<ToastProps> = ({
 
   const getTypeStyles = () => {
     switch (type) {
+      case 'loading':
+        return {
+          borderColor: 'rgba(153, 69, 255, 0.4)',
+          bgGradient: 'from-[rgba(153,69,255,0.1)] to-[rgba(20,241,149,0.05)]',
+          textGradient: 'from-[#9945FF] to-[#14F195]',
+          icon: '',
+        };
       case 'success':
         return {
           borderColor: 'rgba(20, 241, 149, 0.4)',
@@ -114,9 +129,11 @@ export const Toast: React.FC<ToastProps> = ({
       <div className="relative flex items-center gap-2 h-full">
         {/* Icon */}
         <div className="flex-shrink-0 w-4 h-4 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center">
-          <span className="text-xs font-bold text-white">
-            {styles.icon}
-          </span>
+          {type === 'loading' ? (
+            <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <span className="text-xs font-bold text-white">{styles.icon}</span>
+          )}
         </div>
 
         {/* Message */}
@@ -125,6 +142,37 @@ export const Toast: React.FC<ToastProps> = ({
             {message}
           </p>
         </div>
+
+        {/* Copy button */}
+        {copyText && (
+          <button
+            onClick={async (e) => {
+              e.stopPropagation();
+              try {
+                await navigator.clipboard.writeText(copyText);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              } catch (_) {}
+            }}
+            className={`ml-2 p-1 rounded-md border text-white transition-colors ${
+              copied
+                ? 'bg-[rgba(20,241,149,0.15)] border-[rgba(20,241,149,0.5)]'
+                : 'bg-white/5 hover:bg-white/10 border-white/10'
+            }`}
+            aria-label={copied ? 'Copied' : 'Copy'}
+            title={copied ? 'Copied' : 'Copy'}
+          >
+            {copied ? (
+              <svg className="w-3.5 h-3.5 text-[#14F195]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -134,8 +182,9 @@ export interface ToastContainerProps {
   toasts: Array<{
     id: string;
     message: string;
-    type: 'success' | 'error' | 'warning' | 'info';
+    type: 'success' | 'error' | 'warning' | 'info' | 'loading';
     duration?: number;
+    copyText?: string;
   }>;
   onRemove: (id: string) => void;
 }
@@ -158,6 +207,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove
               message={toast.message}
               type={toast.type}
               duration={toast.duration}
+              copyText={toast.copyText}
               onClose={onRemove}
             />
           </div>

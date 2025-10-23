@@ -6,13 +6,14 @@ import { ToastContainer } from './Toast';
 interface Toast {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   duration?: number;
+  copyText?: string;
 }
 
 interface ToastContextType {
   toasts: Toast[];
-  showToast: (message: string, type: Toast['type'], duration?: number) => void;
+  showToast: (message: string, type: Toast['type'], duration?: number, copyText?: string) => string;
   removeToast: (id: string) => void;
 }
 
@@ -33,11 +34,12 @@ interface ToastProviderProps {
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = useCallback((message: string, type: Toast['type'] = 'info', duration = 4000) => {
+  const showToast = useCallback((message: string, type: Toast['type'] = 'info', duration = 4000, copyText?: string) => {
     const id = Math.random().toString(36).substr(2, 9);
-    const toast: Toast = { id, message, type, duration };
+    const toast: Toast = { id, message, type, duration, copyText };
 
     setToasts((prev) => [...prev, toast]);
+    return id;
   }, []);
 
   const removeToast = useCallback((id: string) => {
