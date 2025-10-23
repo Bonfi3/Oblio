@@ -51,19 +51,19 @@ export default function Home() {
       setStakeAmount(''); // Clear input on success
     } catch (error) {
       console.error('Staking failed:', error);
-      showToast('Staking failed. Please check the console for more details.', 'error');
+      showToast('Staking failed. Please check the console for more details', 'error');
     }
   };
 
   // Function to handle unstaking (burning obSOL to get SOL back)
   const handleUnstake = async () => {
     if (!connected || !wallet) {
-      showToast('Please connect your wallet first.', 'warning');
+      showToast('Please connect your wallet first', 'warning');
       return;
     }
     const amount = parseFloat(unstakeAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast('Please enter a valid amount to unstake.', 'warning');
+      showToast('Please enter a valid amount to unstake', 'warning');
       return;
     }
 
@@ -74,7 +74,7 @@ export default function Home() {
       setUnstakeAmount(''); // Clear input on success
     } catch (error) {
       console.error('Unstaking failed:', error);
-      showToast('Unstaking failed. Please check the console for more details.', 'error');
+      showToast('Unstaking failed. Please check the console for more details', 'error');
     }
   };
 
@@ -429,7 +429,7 @@ export default function Home() {
                 <div className="flex gap-2 md:gap-3 mb-6 md:mb-8 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden border border-white/10 ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden border border-white/10 cursor-pointer ${
                       activeTab === 'stake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -444,7 +444,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full border border-white/10 font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full border border-white/10 font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden cursor-pointer ${
                       activeTab === 'unstake'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -459,7 +459,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 border border-white/10 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 border border-white/10 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden cursor-pointer ${
                       activeTab === 'swap'
                         ? 'text-white'
                         : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
@@ -504,10 +504,9 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          {/* UPDATED: Added onClick handler to the Stake button */}
                           <button
                             onClick={handleStake}
-                            className="relative w-full py-4 border border-white/10  rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl"
+                            className="relative w-full py-4 border border-white/10 hover:border-white/30 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.3)] transition-all duration-300 shadow-xl cursor-pointer"
                           >
                             Stake SOL
                           </button>
@@ -522,7 +521,6 @@ export default function Home() {
                           <label className="block text-sm font-medium text-gray-300 mb-3">
                             Amount to Unstake (obSOL)
                           </label>
-                          {/* UPDATED: Made the input interactive */}
                           <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                             <input
                               type="number"
@@ -541,10 +539,9 @@ export default function Home() {
                         </div>
                         <div className="relative group/btn">
                           <div className="absolute inset-0 blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          {/* UPDATED: Added onClick handler to the Unstake button */}
                           <button
                             onClick={handleUnstake}
-                            className="relative w-full border border-white/10 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl"
+                            className="relative w-full border border-white/10 hover:border-white/30 rounded-full py-4 font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.3)] transition-all duration-300 shadow-xl cursor-pointer"
                           >
                             Unstake
                           </button>
@@ -626,7 +623,7 @@ export default function Home() {
 
                         <div className="relative group/btn">
                           <div className="absolute inset-0 rounded-full blur-md opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <button className="relative w-full py-4 border border-white/10 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.2)] transition-all duration-300 shadow-xl">
+                          <button className="relative w-full py-4 border border-white/10 hover:border-white/30 rounded-full font-bold text-base text-white bg-[rgba(153,69,255,0.2)] hover:bg-[rgba(153,69,255,0.3)] transition-all duration-300 shadow-xl cursor-pointer">
                             Swap
                           </button>
                         </div>
