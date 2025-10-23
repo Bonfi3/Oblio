@@ -429,10 +429,10 @@ export default function Home() {
                 <div className="flex gap-2 md:gap-3 mb-6 md:mb-8 w-full">
                   <button
                     onClick={() => setActiveTab('stake')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden border border-white/10 cursor-pointer ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden border border-white/10 ${
                       activeTab === 'stake'
-                        ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
+                        ? 'text-white cursor-default'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 cursor-pointer'
                     }`}
                   >
                     {activeTab === 'stake' && (
@@ -444,10 +444,10 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('unstake')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full border border-white/10 font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden cursor-pointer ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 rounded-full border border-white/10 font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'unstake'
-                        ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
+                        ? 'text-white cursor-default'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 cursor-pointer'
                     }`}
                   >
                     {activeTab === 'unstake' && (
@@ -459,10 +459,10 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => setActiveTab('swap')}
-                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 border border-white/10 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden cursor-pointer ${
+                    className={`flex-1 py-2.5 md:py-3.5 px-3 md:px-4 border border-white/10 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'swap'
-                        ? 'text-white'
-                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10'
+                        ? 'text-white cursor-default'
+                        : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 cursor-pointer'
                     }`}
                   >
                     {activeTab === 'swap' && (
