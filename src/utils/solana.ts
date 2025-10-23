@@ -34,6 +34,10 @@ const treasuryWallet = Keypair.fromSecretKey(decodedSecretKey);
 //    - After creating the mint for the first time, paste the address here.
 let obSOLMintAddress = new PublicKey('B4u93JEn6tyL4Paq13i5FhEkPDWdMCDs5h9VbEFieq45');
 
+// 4. obSOL token decimals (if your token has 6 decimals like USDC, use 1_000_000)
+//    If your token has 9 decimals like SOL, use LAMPORTS_PER_SOL (1_000_000_000)
+const OBSOL_DECIMALS = 1_000_000; // 6 decimals
+
 /**
  * Mints "obSOL" tokens in exchange for SOL.
  * Sends SOL to the static address and mints an equal amount of "obSOL" to the user.
@@ -75,13 +79,13 @@ export async function stake(
     );
   }
 
-  // 3. Mint "obSOL" to the user's token account
+  // 3. Mint "obSOL" to the user's token account (1:1 ratio with SOL)
   transaction.add(
     createMintToInstruction(
       obSOLMintAddress,
       userObSOLAddress,
       treasuryWallet.publicKey, // Mint authority
-      amount * LAMPORTS_PER_SOL
+      amount * OBSOL_DECIMALS // Use obSOL decimals for 1:1 ratio
     )
   );
 
@@ -124,7 +128,7 @@ export async function unstake(
       userObSOLAddress,
       obSOLMintAddress,
       wallet.publicKey, // Owner of the token account
-      amount * LAMPORTS_PER_SOL
+      amount * OBSOL_DECIMALS // Use obSOL decimals
     )
   );
 
