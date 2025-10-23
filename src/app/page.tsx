@@ -20,7 +20,7 @@ const WalletMultiButton = dynamic(
 export default function Home() {
   const [activeTab, setActiveTab] = useState('stake');
   // Set the initial stake amount to 1 SOL as requested
-  const [stakeAmount, setStakeAmount] = useState('1');
+  const [stakeAmount, setStakeAmount] = useState('');
   // Add state for the unstake/burn amount
   const [unstakeAmount, setUnstakeAmount] = useState('');
   const [isSwapped, setIsSwapped] = useState(false);
