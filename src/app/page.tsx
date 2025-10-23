@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 // Import the mint and burn functions from your utility file
 import { stake, unstake } from '../utils/solana';
+// Import toast functionality
+import { useToast } from '../components/ToastProvider';
 
 
 const WalletMultiButton = dynamic(
@@ -25,52 +27,54 @@ export default function Home() {
   const wallet = useWallet();
   const { connection } = useConnection();
   const { connected } = wallet;
+  // Get toast functionality
+  const { showToast } = useToast();
 
   // --- HANDLER FUNCTIONS ---
 
   // Function to handle staking SOL and minting obSOL
   const handleStake = async () => {
     if (!connected || !wallet) {
-      alert('Please connect your wallet first.');
+      showToast('Please connect your wallet first', 'warning');
       return;
     }
     const amount = parseFloat(stakeAmount);
     if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount to stake.');
+      showToast('Please enter a valid amount to stake', 'warning');
       return;
     }
 
     try {
       console.log(`Staking ${amount} SOL...`);
       const signature = await stake(connection, wallet, amount);
-      alert(`Stake successful! Transaction signature: ${signature}`);
+      showToast(`Stake successful! Transaction signature: ${signature}`, 'success');
       setStakeAmount(''); // Clear input on success
     } catch (error) {
       console.error('Staking failed:', error);
-      alert('Staking failed. Please check the console for more details.');
+      showToast('Staking failed. Please check the console for more details.', 'error');
     }
   };
 
   // Function to handle unstaking (burning obSOL to get SOL back)
   const handleUnstake = async () => {
     if (!connected || !wallet) {
-      alert('Please connect your wallet first.');
+      showToast('Please connect your wallet first.', 'warning');
       return;
     }
     const amount = parseFloat(unstakeAmount);
     if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount to unstake.');
+      showToast('Please enter a valid amount to unstake.', 'warning');
       return;
     }
 
     try {
       console.log(`Unstaking ${amount} obSOL...`);
       const signature = await unstake(connection, wallet, amount);
-      alert(`Unstake successful! You received ${amount * 1.2} SOL. Transaction signature: ${signature}`);
+      showToast(`Unstake successful! You received ${amount * 1.2} SOL. Transaction signature: ${signature}`, 'success');
       setUnstakeAmount(''); // Clear input on success
     } catch (error) {
       console.error('Unstaking failed:', error);
-      alert('Unstaking failed. Please check the console for more details.');
+      showToast('Unstaking failed. Please check the console for more details.', 'error');
     }
   };
 
