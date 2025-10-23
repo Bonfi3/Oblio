@@ -560,7 +560,7 @@ export default function Home() {
                     {activeTab === 'stake' && (
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-3">
+                          <label className="block text-sm font-medium text-gray-300 mb-3 text-center">
                             Amount to Stake
                           </label>
                           <div className="relative group/input">
@@ -582,9 +582,8 @@ export default function Home() {
                               </button>
                             </div>
                           </div>
-                          <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>Balance: {solBalance.toFixed(4)} SOL</span>
-                            <span>≈ ${(solBalance * 150).toFixed(2)}</span>
+                          <div className="mt-2 text-xs text-gray-500 text-center">
+                            Balance: {solBalance.toFixed(4)} SOL
                           </div>
                         </div>
                         <div className="relative group/btn">
@@ -603,7 +602,7 @@ export default function Home() {
                     {activeTab === 'unstake' && (
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-3">
+                        <label className="block text-sm font-medium text-gray-300 mb-3 text-center">
                             Amount to Unstake (obSOL)
                           </label>
                           <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
@@ -622,8 +621,8 @@ export default function Home() {
                                 MAX
                               </button>
                           </div>
-                          <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>Your obSOL Balance: {obSOLBalance.toFixed(4)}</span>
+                          <div className="mt-2 text-xs text-gray-500 text-center">
+                            Balance: {obSOLBalance.toFixed(4)} obSOL
                           </div>
                         </div>
                         <div className="relative group/btn">
