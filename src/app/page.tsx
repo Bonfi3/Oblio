@@ -8,6 +8,9 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { stake, unstake } from '../utils/solana';
 // Import toast functionality
 import { useToast } from '../components/ToastProvider';
+// Import Solana web3.js types and functions
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { getAssociatedTokenAddress } from '@solana/spl-token';
 
 
 const WalletMultiButton = dynamic(
@@ -22,6 +25,9 @@ export default function Home() {
   const [unstakeAmount, setUnstakeAmount] = useState('');
   const [isSwapped, setIsSwapped] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  // Add state for balances
+  const [solBalance, setSolBalance] = useState<number>(0);
+  const [obSOLBalance, setObSOLBalance] = useState<number>(0);
 
   // Get the wallet adapter state and the current connection
   const wallet = useWallet();
@@ -32,15 +38,35 @@ export default function Home() {
 
   // --- HANDLER FUNCTIONS ---
 
+  const normalizeDecimalInput = (value: string) => value.replace(',', '.');
+
+  // Function to set max SOL amount (keep some for transaction fees)
+  const handleMaxStake = () => {
+    const maxAmount = Math.max(0, solBalance - 0.01); // Keep 0.01 SOL for fees
+    setStakeAmount(maxAmount.toFixed(4));
+  };
+
+  // Function to set max obSOL amount
+  const handleMaxUnstake = () => {
+    setUnstakeAmount(obSOLBalance.toFixed(4));
+  };
+
   // Function to handle staking SOL and minting obSOL
   const handleStake = async () => {
     if (!connected || !wallet) {
       showToast('Please connect your wallet first', 'warning');
       return;
     }
-    const amount = parseFloat(stakeAmount);
+    const amount = parseFloat(stakeAmount.replace(',', '.'));
     if (isNaN(amount) || amount <= 0) {
       showToast('Please enter a valid amount to stake', 'warning');
+      return;
+    }
+
+    // Prevent staking more than available SOL minus a small fee buffer
+    const availableStake = Math.max(solBalance - 0.01, 0);
+    if (amount > availableStake) {
+      showToast('Insufficient amount', 'warning');
       return;
     }
 
@@ -49,6 +75,8 @@ export default function Home() {
       const signature = await stake(connection, wallet, amount);
       showToast(`Stake successful! Transaction signature: ${signature}`, 'success');
       setStakeAmount(''); // Clear input on success
+      // Refresh balances immediately after successful transaction
+      await fetchBalances();
     } catch (error) {
       console.error('Staking failed:', error);
       showToast('Staking failed. Please check the console for more details', 'error');
@@ -61,9 +89,15 @@ export default function Home() {
       showToast('Please connect your wallet first', 'warning');
       return;
     }
-    const amount = parseFloat(unstakeAmount);
+    const amount = parseFloat(unstakeAmount.replace(',', '.'));
     if (isNaN(amount) || amount <= 0) {
       showToast('Please enter a valid amount to unstake', 'warning');
+      return;
+    }
+
+    // Prevent unstaking more than available obSOL balance
+    if (amount > obSOLBalance) {
+      showToast('insufficient amount', 'error');
       return;
     }
 
@@ -72,6 +106,8 @@ export default function Home() {
       const signature = await unstake(connection, wallet, amount);
       showToast(`Unstake successful! You received ${amount * 1.2} SOL. Transaction signature: ${signature}`, 'success');
       setUnstakeAmount(''); // Clear input on success
+      // Refresh balances immediately after successful transaction
+      await fetchBalances();
     } catch (error) {
       console.error('Unstaking failed:', error);
       showToast('Unstaking failed. Please check the console for more details', 'error');
@@ -83,6 +119,45 @@ export default function Home() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Function to fetch balances
+  const fetchBalances = async () => {
+    if (!wallet.publicKey || !connected) {
+      setSolBalance(0);
+      setObSOLBalance(0);
+      return;
+    }
+
+    try {
+      // Fetch SOL balance
+      const balance = await connection.getBalance(wallet.publicKey);
+      setSolBalance(balance / LAMPORTS_PER_SOL);
+
+      // Fetch obSOL balance
+      const obSOLMintAddress = new PublicKey('B4u93JEn6tyL4Paq13i5FhEkPDWdMCDs5h9VbEFieq45');
+      const userObSOLAddress = await getAssociatedTokenAddress(obSOLMintAddress, wallet.publicKey);
+      const obSOLAccount = await connection.getAccountInfo(userObSOLAddress);
+      
+      if (obSOLAccount) {
+        // Parse the token account data to get the balance
+        const obSOLBalanceData = await connection.getTokenAccountBalance(userObSOLAddress);
+        setObSOLBalance(parseFloat(obSOLBalanceData.value.uiAmount?.toString() || '0'));
+      } else {
+        setObSOLBalance(0);
+      }
+    } catch (error) {
+      console.error('Error fetching balances:', error);
+    }
+  };
+
+  // Fetch balances when wallet is connected
+  useEffect(() => {
+    fetchBalances();
+    
+    // Refresh balances every 10 seconds
+    const interval = setInterval(fetchBalances, 10000);
+    return () => clearInterval(interval);
+  }, [wallet.publicKey, connected, connection]);
 
   // Calculate estimated rewards per year
   const calculateEstimatedRewards = (amount: string, apy: number) => {
@@ -486,20 +561,24 @@ export default function Home() {
                             <div className="absolute inset-0 bg-[rgba(153,69,255,0.1)] border border-white/10 rounded-full blur-sm opacity-0 transition-opacity"></div>
                             <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                               <input
-                                type="number"
+                                type="text"
+                                inputMode="decimal"
+                                pattern="[0-9]*[.,]?[0-9]*"
                                 placeholder="0.00"
                                 value={stakeAmount}
-                                onChange={(e) => setStakeAmount(e.target.value)}
+                                onChange={(e) => setStakeAmount(normalizeDecimalInput(e.target.value))}
                                 className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
                               />
-                              <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
+                              <button 
+                                onClick={handleMaxStake}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider cursor-pointer">
                                 MAX
                               </button>
                             </div>
                           </div>
                           <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>Balance: 0.00 SOL</span>
-                            <span>≈ $0.00</span>
+                            <span>Balance: {solBalance.toFixed(4)} SOL</span>
+                            <span>≈ ${(solBalance * 150).toFixed(2)}</span>
                           </div>
                         </div>
                         <div className="relative group/btn">
@@ -523,18 +602,22 @@ export default function Home() {
                           </label>
                           <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden hover:border-[#9945FF]/50 transition-all">
                             <input
-                              type="number"
+                              type="text"
+                              inputMode="decimal"
+                              pattern="[0-9]*[.,]?[0-9]*"
                               placeholder="0.00"
                               value={unstakeAmount}
-                              onChange={(e) => setUnstakeAmount(e.target.value)}
+                              onChange={(e) => setUnstakeAmount(normalizeDecimalInput(e.target.value))}
                               className="w-full bg-transparent px-5 py-4 text-white text-lg focus:outline-none"
                             />
-                             <button className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider">
+                             <button 
+                               onClick={handleMaxUnstake}
+                               className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[rgba(153,69,255,0.1)] border border-white/10 hover:bg-[rgba(153,69,255,0.15)] active:bg-[rgba(153,69,255,0.25)] active:border-[#9945FF]/50 active:scale-95 rounded-full text-[10px] font-bold text-white transition-all uppercase tracking-wider cursor-pointer">
                                 MAX
                               </button>
                           </div>
                           <div className="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>Your obSOL Balance: 0.00</span>
+                            <span>Your obSOL Balance: {obSOLBalance.toFixed(4)}</span>
                           </div>
                         </div>
                         <div className="relative group/btn">
