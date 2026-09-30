@@ -1,41 +1,40 @@
 {
   "name": "oblio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@solana/spl-token": "^0.4.14",
-    "@solana/wallet-adapter-base": "^0.9.27",
-    "@solana/wallet-adapter-phantom": "^0.9.27",
-    "@solana/wallet-adapter-react": "^0.15.39",
-    "@solana/wallet-adapter-react-ui": "^0.9.39",
-    "@solana/web3.js": "^1.98.4",
-    "base58": "^2.0.1",
+    "@solana/wallet-adapter-base": "^0.9.28",
+    "@solana/wallet-adapter-phantom": "^0.9.30",
+    "@solana/wallet-adapter-react": "^0.15.40",
+    "@solana/wallet-adapter-react-ui": "^0.9.40",
+    "@solana/web3.js": "^1.99.0",
     "bs58": "^6.0.0",
     "buffer": "^6.0.3",
-    "next": "15.5.4",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-hot-toast": "^2.6.0",
-    "tslib": "^2.8.1"
+    "next": "^16.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.14",
-    "@types/base58": "^2.0.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@yarnpkg/pnpify": "^4.1.6",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.36.0",
-    "eslint-config-next": "15.5.4",
-    "postcss": "^8",
-    "tailwindcss": "^4.1.14",
+    "eslint": "^9",
+    "eslint-config-next": "^16.3.8",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "image-size": "^2.0.4",
+    "jayson": {
+      "uuid": "^11.1.1",
+      "stream-json": "^3.7.0"
+    }
   }
 }
