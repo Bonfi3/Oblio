@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .ink { fill: #000; } .ring { stroke: #000; } .cut { fill: #fff; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #fff; } .ring { stroke: #fff; } .cut { fill: #000; }
+    }
+  </style>
+  <circle class="ring" cx="32" cy="32" r="20.5" fill="none" stroke-width="1.9"/>
+  <circle class="ink" cx="32" cy="32" r="14.5"/>
+  <path class="cut" d="M9.5 32 L54.5 32" stroke-width="6" style="stroke:#fff"/>
+  <path class="ink" d="M5 32 Q32 29.1 59 32 Q32 34.9 5 32 Z"/>
+  <path class="cut" d="M16.5 32 Q32 30.0 47.5 32 Q32 34.0 16.5 32 Z"/>
+  <circle class="ink" cx="2.0" cy="32" r="1.3"/><circle class="ink" cx="62.0" cy="32" r="1.3"/>
+</svg>

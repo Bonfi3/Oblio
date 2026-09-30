@@ -1,19 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { ToastContainer } from './Toast';
-
-interface Toast {
-  id: string;
-  message: string;
-  type: 'success' | 'error' | 'warning' | 'info' | 'loading';
-  duration?: number;
-  copyText?: string;
-}
+import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
+import { ToastContainer, ToastItem, ToastLink, ToastType } from './Toast';
 
 interface ToastContextType {
-  toasts: Toast[];
-  showToast: (message: string, type: Toast['type'], duration?: number, copyText?: string) => string;
+  showToast: (message: string, type?: ToastType, duration?: number, link?: ToastLink) => string;
   removeToast: (id: string) => void;
 }
 
@@ -27,33 +18,26 @@ export const useToast = () => {
   return context;
 };
 
-interface ToastProviderProps {
-  children: ReactNode;
-}
+export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
-  const [toasts, setToasts] = useState<Toast[]>([]);
-
-  const showToast = useCallback((message: string, type: Toast['type'] = 'info', duration = 4000, copyText?: string) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const toast: Toast = { id, message, type, duration, copyText };
-
-    setToasts((prev) => [...prev, toast]);
-    return id;
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: ToastType = 'info', duration = 4000, link?: ToastLink) => {
+      const id = Math.random().toString(36).slice(2, 11);
+      setToasts((prev) => [...prev, { id, message, type, duration, link }]);
+      return id;
+    },
+    []
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
-  const contextValue: ToastContextType = {
-    toasts,
-    showToast,
-    removeToast,
-  };
+  const value = useMemo(() => ({ showToast, removeToast }), [showToast, removeToast]);
 
   return (
-    <ToastContext.Provider value={contextValue}>
+    <ToastContext.Provider value={value}>
       {children}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </ToastContext.Provider>

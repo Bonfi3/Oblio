@@ -1,155 +1,59 @@
-import {
-  Connection,
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  Keypair,
-  LAMPORTS_PER_SOL,
-} from '@solana/web3.js';
-import {
-  getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  createMintToInstruction,
-  createBurnInstruction,
-  createMint,
-} from '@solana/spl-token';
+/**
+ * Browser-side stake/unstake.
+ *
+ * The browser never holds the treasury key. It asks /api/transaction for a
+ * transaction already signed by the treasury, has the user's wallet add its
+ * signature, and submits it to the network.
+ */
+import { Connection, Transaction } from '@solana/web3.js';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import bs58 from 'bs58';
+import { Buffer } from 'buffer';
 
-// --- IMPORTANT CONFIGURATION ---
+export { getBalances, obSOLMintAddress, UNSTAKE_RATE } from '@/lib/oblio';
 
-// 1. Replace with the static public key where you want to receive SOL.
-const STATIC_ADDRESS = new PublicKey('FqpTYTSHDmsHcXKyKfTscvoziARvqHvggpDFphdQgEgL');
+type Action = 'stake' | 'unstake';
 
-// 2. Replace with the secret key for your treasury wallet.
-//    - This wallet will be the mint authority for "obSOL".
-//    - It will pay out SOL when users burn "obSOL".
-//    - In production, load this from a secure environment variable, DO NOT hardcode it.
-//    - You can generate a new keypair with `solana-keygen new`.
-let decodedSecretKey: Uint8Array;
-decodedSecretKey = bs58.decode("3ArHkaRSSyF7mkAqEytFviTN7pyyzAUibHjnY6UChKy6pmfTi8jZaeKakbNa2pxsBHiVY5HMNV9eicEY6E7Eu196");
-const treasuryWallet = Keypair.fromSecretKey(decodedSecretKey);
+interface TransactionResponse {
+  transaction: string; // base64, partially signed by the treasury
+  blockhash: string;
+  lastValidBlockHeight: number;
+}
 
-// 3. This will hold your "obSOL" token's mint address.
-//    - After creating the mint for the first time, paste the address here.
-let obSOLMintAddress = new PublicKey('B4u93JEn6tyL4Paq13i5FhEkPDWdMCDs5h9VbEFieq45');
-
-// 4. obSOL token decimals (if your token has 6 decimals like USDC, use 1_000_000)
-//    If your token has 9 decimals like SOL, use LAMPORTS_PER_SOL (1_000_000_000)
-const OBSOL_DECIMALS = 1_000_000; // 6 decimals
-
-/**
- * Mints "obSOL" tokens in exchange for SOL.
- * Sends SOL to the static address and mints an equal amount of "obSOL" to the user.
- */
-export async function stake(
+async function execute(
+  action: Action,
   connection: Connection,
   wallet: WalletContextState,
   amount: number
 ): Promise<string> {
-  if (!wallet.publicKey || !wallet.sendTransaction) {
+  if (!wallet.publicKey || !wallet.signTransaction) {
     throw new Error('Wallet not connected');
   }
-  if (!obSOLMintAddress) {
-    throw new Error("obSOL mint address is not set.");
+
+  // 1. Ask the server to build the transaction and co-sign it with the treasury
+  const response = await fetch('/api/transaction', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, owner: wallet.publicKey.toBase58(), amount }),
+  });
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload.error ?? `Server error ${response.status}`);
   }
+  const { transaction, blockhash, lastValidBlockHeight } = payload as TransactionResponse;
 
-  const transaction = new Transaction();
+  // 2. The user's wallet adds its signature (the treasury one is kept)
+  const signed = await wallet.signTransaction(Transaction.from(Buffer.from(transaction, 'base64')));
 
-  // 1. Transfer SOL from the user to the static address
-  transaction.add(
-    SystemProgram.transfer({
-      fromPubkey: wallet.publicKey,
-      toPubkey: STATIC_ADDRESS,
-      lamports: amount * LAMPORTS_PER_SOL,
-    })
-  );
-
-  // 2. Get or create the user's associated token account for "obSOL"
-  const userObSOLAddress = await getAssociatedTokenAddress(obSOLMintAddress, wallet.publicKey);
-  const userObSOLAccount = await connection.getAccountInfo(userObSOLAddress);
-  if (!userObSOLAccount) {
-    transaction.add(
-      createAssociatedTokenAccountInstruction(
-        wallet.publicKey,
-        userObSOLAddress,
-        wallet.publicKey,
-        obSOLMintAddress
-      )
-    );
-  }
-
-  // 3. Mint "obSOL" to the user's token account (1:1 ratio with SOL)
-  transaction.add(
-    createMintToInstruction(
-      obSOLMintAddress,
-      userObSOLAddress,
-      treasuryWallet.publicKey, // Mint authority
-      amount * OBSOL_DECIMALS // Use obSOL decimals for 1:1 ratio
-    )
-  );
-
-  try {
-    const signature = await wallet.sendTransaction(transaction, connection, {
-      signers: [treasuryWallet],
-    });
-    await connection.confirmTransaction(signature, 'processed');
-    console.log('Mint successful:', signature);
-    return signature;
-  } catch (error) {
-    console.error('Mint failed:', error);
-    throw error;
-  }
+  // 3. Submit and wait for confirmation
+  const signature = await connection.sendRawTransaction(signed.serialize());
+  await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'processed');
+  return signature;
 }
 
-/**
- * Burns "obSOL" tokens and returns SOL to the user at a 1.2x rate.
- */
-export async function unstake(
-  connection: Connection,
-  wallet: WalletContextState,
-  amount: number
-): Promise<string> {
-  if (!wallet.publicKey || !wallet.sendTransaction) {
-    throw new Error('Wallet not connected');
-  }
-  if (!obSOLMintAddress) {
-    throw new Error("obSOL mint address is not set.");
-  }
+/** Sends SOL and mints the same amount of obSOL to the user. */
+export const stake = (connection: Connection, wallet: WalletContextState, amount: number) =>
+  execute('stake', connection, wallet, amount);
 
-  const transaction = new Transaction();
-
-  // 1. Get the user's associated token account for "obSOL"
-  const userObSOLAddress = await getAssociatedTokenAddress(obSOLMintAddress, wallet.publicKey);
-
-  // 2. Burn "obSOL" from the user's token account
-  transaction.add(
-    createBurnInstruction(
-      userObSOLAddress,
-      obSOLMintAddress,
-      wallet.publicKey, // Owner of the token account
-      amount * OBSOL_DECIMALS // Use obSOL decimals
-    )
-  );
-
-  // 3. Transfer SOL from the treasury wallet back to the user (amount * 1.2)
-  transaction.add(
-    SystemProgram.transfer({
-      fromPubkey: treasuryWallet.publicKey,
-      toPubkey: wallet.publicKey,
-      lamports: amount * 1.2 * LAMPORTS_PER_SOL,
-    })
-  );
-
-  try {
-    const signature = await wallet.sendTransaction(transaction, connection, {
-      signers: [treasuryWallet],
-    });
-    await connection.confirmTransaction(signature, 'processed');
-    console.log('Burn successful:', signature);
-    return signature;
-  } catch (error) {
-    console.error('Burn failed:', error);
-    throw error;
-  }
-}
+/** Burns obSOL and returns amount * UNSTAKE_RATE SOL to the user. */
+export const unstake = (connection: Connection, wallet: WalletContextState, amount: number) =>
+  execute('unstake', connection, wallet, amount);
