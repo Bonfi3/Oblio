@@ -8,6 +8,8 @@ import { useToast } from './ToastProvider';
 
 export const ESTIMATED_APY = 6.5;
 const FEE_RESERVE = 0.01; // SOL kept aside for network fees
+// Stake/unstake are disabled until launch; the button shows "Coming soon".
+const COMING_SOON = true;
 const EXPLORER = (signature: string) => `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
 
 type Mode = 'stake' | 'unstake';
@@ -76,6 +78,7 @@ export function StakePanel() {
   };
 
   const submit = async () => {
+    if (COMING_SOON) return;
     if (!connected) {
       setVisible(true);
       return;
@@ -110,7 +113,9 @@ export function StakePanel() {
     }
   };
 
-  const buttonLabel = !connected
+  const buttonLabel = COMING_SOON
+    ? 'Coming soon'
+    : !connected
     ? 'Connect wallet'
     : pending
       ? 'Confirming…'
@@ -198,7 +203,7 @@ export function StakePanel() {
 
         <button
           onClick={submit}
-          disabled={connected && (pending || value <= 0 || exceeds)}
+          disabled={COMING_SOON || (connected && (pending || value <= 0 || exceeds))}
           className="mt-6 h-13 w-full rounded-[4px] bg-ink text-[15px] font-medium text-paper transition-colors hover:bg-[#262626] disabled:cursor-not-allowed disabled:bg-mist disabled:text-[#9a9a9a]"
         >
           {buttonLabel}
