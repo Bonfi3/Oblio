@@ -24,6 +24,7 @@
 import { NextResponse } from 'next/server';
 import { clusterApiUrl, Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js';
 import bs58 from 'bs58';
+import { COMING_SOON } from '@/lib/launch';
 import { buildStakeInstructions, buildUnstakeInstructions } from '@/lib/oblio';
 
 // Web3.js needs Node APIs; don't run this on the Edge runtime.
@@ -50,6 +51,10 @@ function getTreasury(): Keypair {
 type Body = { action?: unknown; owner?: unknown; amount?: unknown };
 
 export async function POST(request: Request) {
+  if (COMING_SOON) {
+    return NextResponse.json({ error: 'Staking is not live yet.' }, { status: 503 });
+  }
+
   // --- 1. Validate the request ---
   let body: Body;
   try {

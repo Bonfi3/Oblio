@@ -4,12 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { getBalances, stake, unstake, UNSTAKE_RATE } from '@/utils/solana';
+import { COMING_SOON } from '@/lib/launch';
 import { useToast } from './ToastProvider';
 
 export const ESTIMATED_APY = 6.5;
 const FEE_RESERVE = 0.01; // SOL kept aside for network fees
-// Stake/unstake are disabled until launch; the button shows "Coming soon".
-const COMING_SOON = true;
 const EXPLORER = (signature: string) => `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
 
 type Mode = 'stake' | 'unstake';
