@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArticleList } from '@/components/ArticleList';
-import { BlackHole, BlackHoleView } from '@/components/BlackHole';
-import { DEFAULT_VIEW } from '@/components/blackHoleScene';
+import { BlackHole } from '@/components/BlackHole';
 import { FeatureStory } from '@/components/FeatureStory';
 import { IntroLoader } from '@/components/IntroLoader';
-import { CountUp, Reveal, ScrubWords, useScrollProgress, WordReveal } from '@/components/motion';
+import { CountUp, Reveal, ScrubWords, WordReveal } from '@/components/motion';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { StakePanel } from '@/components/StakePanel';
@@ -31,9 +30,6 @@ const HOLE_OPACITY = 0.6;
 
 export default function Home() {
   const horizonRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
-  const holeView = useRef<BlackHoleView>({ ...DEFAULT_VIEW });
   // The intro only plays when the site is first loaded on this page, not on client navigations back to it.
   const [playIntro] = useState(() => !navState.introPlayed);
   const [introDone, setIntroDone] = useState(!playIntro);
@@ -48,24 +44,6 @@ export default function Home() {
     scrollToSection(section);
   }, []);
 
-  // Scrolling into the next section, the black hole collapses: the disk turns edge-on and spins
-  // faster while the whole hole shrinks and falls toward the section below, then fades out.
-  useScrollProgress(heroRef, () => {
-    const hero = heroRef.current;
-    const hole = backdropRef.current;
-    if (!hero || !hole || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const scrolled = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / (hero.offsetHeight * 0.85)));
-    const t = scrolled * scrolled * (3 - 2 * scrolled); // smoothstep
-    hole.style.transform = `translate3d(-50%, calc(-50% + ${t * hero.offsetHeight * 0.7}px), 0) scale(${1 - 0.8 * t})`;
-    hole.style.opacity = String(HOLE_OPACITY * (1 - Math.max(0, (scrolled - 0.6) / 0.4)));
-    holeView.current = {
-      tilt: DEFAULT_VIEW.tilt * (1 - 0.8 * t),
-      rotation: DEFAULT_VIEW.rotation - 0.25 * t,
-      lines: 1 - 0.5 * t,
-      speed: 1 + 5 * t,
-    };
-  });
-
   return (
     <>
       {playIntro && <IntroLoader targetRef={horizonRef} onDone={handleIntroDone} />}
@@ -73,16 +51,14 @@ export default function Home() {
         <SiteHeader overlay />
 
         <main className="flex-1">
-          <div ref={heroRef} className="relative overflow-x-clip">
+          <div className="relative overflow-x-clip">
             {/* The loader forms the black hole exactly here, then fades out over this faint copy of it */}
             <div
-              ref={backdropRef}
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-[40%] w-[135vw] max-w-[1100px] will-change-transform lg:left-[54%] lg:top-[46%] lg:w-[min(70vw,1000px)]"
-              // Centered by the collapse transform (set on mount), not by translate classes
-              style={{ opacity: HOLE_OPACITY, transform: 'translate3d(-50%, -50%, 0)' }}
+              className="pointer-events-none absolute left-1/2 top-[40%] w-[135vw] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 lg:left-[54%] lg:top-[46%] lg:w-[min(70vw,1000px)]"
+              style={{ opacity: HOLE_OPACITY }}
             >
-              <BlackHole horizonRef={horizonRef} view={holeView} interactive={introDone} outline />
+              <BlackHole horizonRef={horizonRef} interactive={introDone} outline />
             </div>
 
             <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-y-12 px-4 pt-28 pb-12 sm:px-8 lg:min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-x-16 lg:pt-24 lg:pb-36 xl:grid-cols-[minmax(0,1fr)_minmax(0,580px)] xl:gap-x-24">
