@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { getBalances, stake, unstake, UNSTAKE_RATE } from '@/utils/solana';
+import { PROVISIONED_APY } from '@/lib/apy';
 import { COMING_SOON } from '@/lib/launch';
 import { useToast } from './ToastProvider';
 
-export const ESTIMATED_APY = 6.5;
 const FEE_RESERVE = 0.01; // SOL kept aside for network fees
 const EXPLORER = (signature: string) => `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
 
@@ -193,7 +193,8 @@ export function StakePanel() {
           {isStake ? (
             <>
               <Row label="Exchange rate" value="1 SOL = 1 obSOL" />
-              <Row label="Estimated yearly reward" value={`${format(value * (ESTIMATED_APY / 100))} SOL`} />
+              <Row label="Provisioned staking APY" value={`${PROVISIONED_APY.toFixed(2)}%`} />
+              <Row label="Estimated yearly reward" value={`${format(value * (PROVISIONED_APY / 100))} SOL`} />
             </>
           ) : (
             <Row label="Redemption rate" value={`1 obSOL = ${UNSTAKE_RATE.toFixed(2)} SOL`} />
