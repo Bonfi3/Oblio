@@ -154,12 +154,4 @@ export function drawWell(f: WellFrame) {
   ctx.fillStyle = mask;
   ctx.fillRect(0, 0, f.width, f.height);
   ctx.globalCompositeOperation = 'source-over';
-  ctx.fillStyle = '#000';
-
-  // The mass: not drawn during the intro, it appears with the backdrop as the loader fades
-  if (f.intro !== undefined) return;
-  const [mx, my] = project(0, 0);
-  ctx.beginPath();
-  ctx.arc(mx, my, 3, 0, Math.PI * 2);
-  ctx.fill();
 }
