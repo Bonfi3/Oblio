@@ -65,14 +65,14 @@ export default function Home() {
                   out of view.
                 </Reveal>
 
-                <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-10 grid max-w-[560px] grid-cols-2 border-t border-ink text-left lg:mx-0 lg:mt-12">
-                  <div className="pt-4 pr-4">
+                <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-10 grid max-w-[560px] grid-cols-2 border-t border-ink text-center lg:mx-0 lg:mt-12">
+                  <div className="px-2 pt-4">
                     <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Provisioned staking APY</dt>
                     <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
                       <CountUp value={PROVISIONED_APY} suffix="%" play={introDone} />
                     </dd>
                   </div>
-                  <div className="pt-4 pr-4">
+                  <div className="px-2 pt-4">
                     <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Expected additional APY</dt>
                     <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
                       <CountUp value={EXPECTED_ADDITIONAL_APY} decimals={1} prefix="+" suffix="%" play={introDone} />
