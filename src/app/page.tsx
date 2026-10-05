@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArticleList } from '@/components/ArticleList';
 import { BlackHole } from '@/components/BlackHole';
@@ -10,6 +10,7 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { StakePanel } from '@/components/StakePanel';
 import { EXPECTED_ADDITIONAL_APY, PROVISIONED_APY } from '@/lib/apy';
 import { ARTICLES, FEATURES } from '@/lib/articles';
+import { navState, scrollToSection } from '@/lib/navigation';
 import { UNSTAKE_RATE } from '@/utils/solana';
 
 function ArrowLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -25,12 +26,23 @@ function ArrowLink({ href, children }: { href: string; children: React.ReactNode
 
 export default function Home() {
   const horizonRef = useRef<HTMLDivElement>(null);
-  const [introDone, setIntroDone] = useState(false);
+  // The intro only plays when the site is first loaded on this page, not on client navigations back to it.
+  const [playIntro] = useState(() => !navState.introPlayed);
+  const [introDone, setIntroDone] = useState(!playIntro);
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
+
+  useEffect(() => {
+    const section = navState.pendingSection;
+    if (!section) return;
+    navState.pendingSection = null;
+    // Start from the top so the page visibly scrolls down to the section.
+    window.scrollTo(0, 0);
+    scrollToSection(section);
+  }, []);
 
   return (
     <>
-      <IntroLoader targetRef={horizonRef} onDone={handleIntroDone} />
+      {playIntro && <IntroLoader targetRef={horizonRef} onDone={handleIntroDone} />}
 
       <div className="flex min-h-dvh flex-col">
         <SiteHeader />
@@ -111,7 +123,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section aria-labelledby="articles-title" className="border-t border-rule bg-mist/60">
+          <section id="articles" aria-labelledby="articles-title" className="border-t border-rule bg-mist/60">
             <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 lg:py-24">
               <div className="mb-10 flex items-end justify-between gap-6">
                 <div>
