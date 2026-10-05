@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArticleList } from '@/components/ArticleList';
+import { BlackHole } from '@/components/BlackHole';
 import { FeatureStory } from '@/components/FeatureStory';
 import { GravityWell } from '@/components/GravityWell';
 import { IntroLoader } from '@/components/IntroLoader';
@@ -65,14 +66,14 @@ export default function Home() {
                   out of view.
                 </Reveal>
 
-                <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-10 grid max-w-[560px] grid-cols-2 border-t border-ink text-center lg:mx-0 lg:mt-12">
-                  <div className="px-2 pt-4">
+                <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-10 flex max-w-[560px] justify-center gap-x-10 border-t border-ink text-center sm:gap-x-16 lg:mx-0 lg:mt-12 lg:justify-start">
+                  <div className="pt-4">
                     <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Provisioned staking APY</dt>
                     <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
                       <CountUp value={PROVISIONED_APY} suffix="%" play={introDone} />
                     </dd>
                   </div>
-                  <div className="px-2 pt-4">
+                  <div className="pt-4">
                     <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Expected additional APY</dt>
                     <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
                       <CountUp value={EXPECTED_ADDITIONAL_APY} decimals={1} prefix="+" suffix="%" play={introDone} />
@@ -92,14 +93,19 @@ export default function Home() {
             </div>
           </div>
 
-          <section aria-label="Confidential by design" className="relative border-t border-rule">
-            <div className="mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:py-40">
+          {/* isolate + bg-paper: the statement blends only against this section's white and the black hole */}
+          <section aria-label="Confidential by design" className="relative isolate overflow-hidden border-t border-rule bg-paper">
+            <BlackHole
+              interactive
+              className="!absolute left-[82%] top-[78%] !w-[150vw] max-w-none -translate-x-1/2 -translate-y-1/2 lg:left-[72%] lg:top-1/2 lg:!w-[min(82vw,1240px)]"
+            />
+            <div className="relative mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:py-40">
               <Reveal as="p" className="text-[13px] font-medium text-graphite">
                 Confidential by design
               </Reveal>
               <ScrubWords
                 text="On a public chain every stake position is visible to anyone. Oblio pools them, earns the full provisioned rate, targets more on top, and keeps your position out of view."
-                className="mt-6 max-w-[24ch] text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] sm:text-[52px] lg:max-w-[26ch] lg:text-[64px]"
+                className="mt-6 max-w-[24ch] text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-paper mix-blend-difference sm:text-[52px] lg:max-w-[26ch] lg:text-[64px]"
               />
             </div>
           </section>

@@ -9,6 +9,8 @@ export interface Article {
   date: string; // ISO date
   minutes: number;
   excerpt: string;
+  /** Cover image in /public; until set, a hairline placeholder is drawn. */
+  image?: string;
   body: Block[];
 }
 

@@ -68,7 +68,7 @@ export function FeatureStory() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-16">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:-mt-24 lg:grid lg:grid-cols-2 lg:gap-16">
       {/* Sticky within the whole story: on top of the panels on mobile, beside them on desktop */}
         <div className="sticky top-0 z-10 flex h-[44svh] flex-col items-center justify-center border-b border-rule bg-paper lg:h-dvh lg:self-start lg:border-0 lg:bg-transparent">
           <BlackHole view={viewRef} square className="!w-[min(88%,32svh)] lg:!w-[min(88%,66vh,600px)]" />
