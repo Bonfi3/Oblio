@@ -26,16 +26,14 @@ function ArrowLink({ href, children }: { href: string; children: React.ReactNode
 }
 
 export default function Home() {
-  const horizonRef = useRef<HTMLDivElement>(null);
+  const backdropImageRef = useRef<HTMLImageElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   // The intro only plays when the site is first loaded on this page, not on client navigations back to it.
   const [playIntro] = useState(() => !navState.introPlayed);
-  // introDone: the page animates in (as the black hole starts to dissipate); loaderGone: the loader has finished
+  // The page animates in as soon as the loader starts to clear
   const [introDone, setIntroDone] = useState(!playIntro);
-  const [loaderGone, setLoaderGone] = useState(!playIntro);
   const handleReveal = useCallback(() => setIntroDone(true), []);
-  const handleIntroDone = useCallback(() => setLoaderGone(true), []);
 
   useEffect(() => {
     const section = navState.pendingSection;
@@ -57,11 +55,7 @@ export default function Home() {
 
   return (
     <>
-      {playIntro && <IntroLoader targetRef={horizonRef} onReveal={handleReveal} onDone={handleIntroDone} />}
-      {/* Where the loader forms the black hole: the middle of the screen */}
-      {!loaderGone && (
-        <div ref={horizonRef} aria-hidden className="pointer-events-none fixed left-1/2 top-1/2 size-[180px] -translate-x-1/2 -translate-y-1/2" />
-      )}
+      {playIntro && <IntroLoader targetRef={backdropImageRef} onReveal={handleReveal} onDone={handleReveal} />}
       <div className="flex min-h-dvh flex-col">
         <SiteHeader overlay />
 
@@ -70,6 +64,7 @@ export default function Home() {
             <div ref={backdropRef} aria-hidden className="absolute inset-0 will-change-transform">
               {/* The well of the backdrop (74.4% / 60.8% of the image) lands between the copy and the panel */}
               <Image
+                ref={backdropImageRef}
                 src="/hero-backdrop.webp"
                 alt=""
                 width={3840}

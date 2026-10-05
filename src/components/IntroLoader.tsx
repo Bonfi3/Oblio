@@ -1,39 +1,41 @@
 'use client';
 
 import { RefObject, useEffect, useRef, useState } from 'react';
-import { clamp01, drawScene, easeOutCubic, setupCanvas } from './blackHoleScene';
+import { clamp01, easeOutCubic, setupCanvas } from './blackHoleScene';
 
-// Timeline (ms). Dust timing lives in blackHoleScene (INFALL, STRUCTURE_*).
-const HORIZON_START = 1100; // the horizon starts to form
-const HORIZON_END = 2000;
-const HOLD = 2400; // the black hole starts to dissipate and the page appears behind it
-const DISSIPATE = 1700;
-const SHARDS = 900; // grains the horizon breaks into
+// Timeline (ms)
+const DOT_END = 350; // the mass appears
+const RINGS_START = 250; // rings ripple outward one after the other
+const RING_STAGGER = 75;
+const RING_GROW = 800;
+const RADIALS_START = 900; // radial lines draw from the well outward
+const RADIALS_GROW = 1200;
+const HOLD = 2300; // the white clears and the page appears over the drawing
+const REVEAL = 900;
+
+// Geometry of the backdrop artwork, measured on the image
+const WELL_X = 0.744; // the well, as shares of the image width and height
+const WELL_Y = 0.608;
+const OUTER_RX = 0.41; // horizontal radius of the outermost full ring, as a share of the width
+const SQUASH = 0.42; // ring height / width
+const SHIFT_X = -0.021; // rings drift up and left of the well as they widen (the funnel's depth)
+const SHIFT_Y = -0.061;
+const RINGS = 22; // up to u = 1.8, beyond the frame
+const RING_MAX = 1.8;
+const RADIALS = 30;
+const DUST = 140;
 
 interface IntroLoaderProps {
-  /** Where the black hole forms: the loader measures this element every frame. */
-  targetRef: RefObject<HTMLDivElement | null>;
-  /** The black hole starts to dissipate: the page can animate in underneath. */
+  /** The backdrop image: the loader draws its gravity well exactly over it. */
+  targetRef: RefObject<HTMLElement | null>;
+  /** The white starts to clear: the page can animate in underneath. */
   onReveal?: () => void;
   /** The loader is gone. */
   onDone: () => void;
 }
 
-// Grains spread over the horizon disk; each flies outward with a little swirl as it fades.
-const makeShards = () =>
-  Array.from({ length: SHARDS }, () => ({
-    r: Math.sqrt(Math.random()), // share of the horizon radius
-    a: Math.random() * Math.PI * 2,
-    reach: 0.6 + Math.random() * 2.4, // extra distance, in horizon radii
-    swirl: (Math.random() - 0.3) * 0.9,
-    size: 0.8 + Math.random() * 1.8,
-    delay: Math.random() * 0.35, // the disk breaks up from its edge inward
-  }));
-
 export function IntroLoader({ targetRef, onReveal, onDone }: IntroLoaderProps) {
-  const backRef = useRef<HTMLCanvasElement>(null);
-  const frontRef = useRef<HTMLCanvasElement>(null);
-  const horizonRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, setPhase] = useState<'forming' | 'reveal' | 'done'>('forming');
   const onDoneRef = useRef(onDone);
   const onRevealRef = useRef(onReveal);
@@ -44,11 +46,9 @@ export function IntroLoader({ targetRef, onReveal, onDone }: IntroLoaderProps) {
   }, [onDone, onReveal]);
 
   useEffect(() => {
-    const backCanvas = backRef.current;
-    const frontCanvas = frontRef.current;
-    const horizonEl = horizonRef.current;
+    const canvas = canvasRef.current;
     const target = targetRef.current;
-    if (!backCanvas || !frontCanvas || !horizonEl || !target) return;
+    if (!canvas || !target) return;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- skip the intro; depends on a browser-only query
@@ -58,7 +58,7 @@ export function IntroLoader({ targetRef, onReveal, onDone }: IntroLoaderProps) {
       return;
     }
 
-    // Start from the top of the page
+    // The drawing lines up with the backdrop, so start from the top of the page
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
     const previousOverflow = document.body.style.overflow;
@@ -66,74 +66,102 @@ export function IntroLoader({ targetRef, onReveal, onDone }: IntroLoaderProps) {
 
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const back = setupCanvas(backCanvas, width, height);
-    const front = setupCanvas(frontCanvas, width, height);
-    const reach = Math.hypot(width, height) / 2;
+    const ctx = setupCanvas(canvas, width, height);
+    const dust = Array.from({ length: DUST }, () => ({
+      u: 0.25 + Math.random() * 1.5,
+      a: Math.random() * Math.PI * 2,
+      size: 0.8 + Math.random() * 1.4,
+      delay: Math.random() * 900,
+    }));
     const start = performance.now();
     let frame = 0;
     let doneTimer: ReturnType<typeof setTimeout> | undefined;
-    let dissolveStart = 0;
-    const shards = makeShards();
 
     const render = (now: number) => {
       const t = now - start;
       // Re-measured every frame in case fonts or layout shift
       const rect = target.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const horizon = rect.width / 2;
-      const growth = easeOutCubic(clamp01((t - HORIZON_START) / (HORIZON_END - HORIZON_START)));
-      const d = dissolveStart ? clamp01((now - dissolveStart) / DISSIPATE) : 0;
-      // The solid disk gives way early; its grains carry the shape outward
-      const solid = 1 - easeOutCubic(clamp01(d / 0.45));
+      const W = rect.width;
+      const wx = rect.left + rect.width * WELL_X;
+      const wy = rect.top + rect.height * WELL_Y;
 
-      horizonEl.style.width = horizonEl.style.height = `${rect.width}px`;
-      horizonEl.style.transform = `translate(${cx - horizon}px, ${cy - horizon}px) scale(${growth * (1 - 0.15 * d)})`;
-      horizonEl.style.opacity = String(solid);
-      horizonEl.style.filter = d ? `blur(${d * 14}px)` : '';
+      // A point on ring u at angle a: rings widen and drift with u like the funnel in the artwork
+      const point = (u: number, a: number): [number, number] => {
+        const rx = OUTER_RX * W * Math.pow(u, 1.5);
+        return [wx + SHIFT_X * W * u + rx * Math.cos(a), wy + SHIFT_Y * W * u + rx * SQUASH * Math.sin(a)];
+      };
 
-      drawScene({
-        back,
-        front,
-        width,
-        height,
-        cx,
-        cy,
-        horizon,
-        mask: horizon * growth * solid,
-        now,
-        dissipate: d,
-        intro: { t, reach },
-      });
+      ctx.clearRect(0, 0, width, height);
+      ctx.lineWidth = 1;
 
-      if (d > 0) {
-        front.fillStyle = '#000';
-        for (const g of shards) {
-          const p = clamp01((d - g.delay) / (1 - g.delay));
-          if (p >= 1) continue;
-          const e = easeOutCubic(p);
-          const dist = horizon * (g.r + g.reach * e);
-          const angle = g.a + g.swirl * e;
-          front.globalAlpha = (1 - p) * (p > 0 ? 1 : solid);
-          front.fillRect(cx + dist * Math.cos(angle), cy + dist * Math.sin(angle), g.size, g.size);
+      // Rings ripple out from the mass
+      const ringGrowth: number[] = [];
+      for (let k = 1; k <= RINGS; k++) {
+        const p = easeOutCubic(clamp01((t - RINGS_START - k * RING_STAGGER) / RING_GROW));
+        const u = (k / RINGS) * RING_MAX;
+        ringGrowth.push(u * p);
+        if (p <= 0) continue;
+        ctx.strokeStyle = `rgba(0,0,0,${0.2 * p})`;
+        ctx.beginPath();
+        for (let a = 0; a <= Math.PI * 2 + 0.01; a += Math.PI / 90) {
+          const [x, y] = point(u * p, a);
+          if (a === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
-        front.globalAlpha = 1;
+        ctx.stroke();
       }
+
+      // Radial lines follow the rings outward from the well
+      const reach = easeOutCubic(clamp01((t - RADIALS_START) / RADIALS_GROW));
+      if (reach > 0) {
+        ctx.strokeStyle = `rgba(0,0,0,${0.18 * reach})`;
+        const last = reach * RINGS;
+        for (let i = 0; i < RADIALS; i++) {
+          const a = (i / RADIALS) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(wx, wy);
+          for (let k = 1; k <= Math.ceil(last); k++) {
+            // The last segment grows smoothly instead of popping in
+            const u = (Math.min(k, last) / RINGS) * RING_MAX;
+            const [x, y] = point(Math.min(u, ringGrowth[k - 1] ?? u), a);
+            ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+      }
+
+      // Dust spirals slowly toward the mass
+      ctx.fillStyle = '#000';
+      const pull = easeOutCubic(clamp01(t / 3200));
+      for (const d of dust) {
+        const p = clamp01((t - d.delay) / 600);
+        if (p <= 0) continue;
+        const u = d.u * (1 - 0.3 * pull);
+        const [x, y] = point(u, d.a + (0.9 * pull) / Math.max(u, 0.3));
+        ctx.globalAlpha = 0.7 * p;
+        ctx.fillRect(x, y, d.size, d.size);
+      }
+      ctx.globalAlpha = 1;
+
+      // The mass
+      const dot = easeOutCubic(clamp01(t / DOT_END));
+      ctx.beginPath();
+      ctx.arc(wx, wy, 3.5 * dot, 0, Math.PI * 2);
+      ctx.fill();
+
       frame = requestAnimationFrame(render);
     };
     frame = requestAnimationFrame(render);
 
-    // The white clears and the page appears while the black hole dissipates into dust
     const revealTimer = setTimeout(() => {
       setPhase('reveal');
-      dissolveStart = performance.now();
       document.body.style.overflow = previousOverflow; // page scrolls again
       onRevealRef.current?.();
       doneTimer = setTimeout(() => {
         cancelAnimationFrame(frame);
         setPhase('done');
         onDoneRef.current();
-      }, DISSIPATE);
+      }, REVEAL);
     }, HOLD);
 
     return () => {
@@ -146,21 +174,20 @@ export function IntroLoader({ targetRef, onReveal, onDone }: IntroLoaderProps) {
 
   if (phase === 'done') return null;
 
+  const revealing = phase === 'reveal';
   return (
     <div
       className={`fixed inset-0 z-[100] transition-colors duration-[900ms] ease-out ${
-        phase === 'reveal' ? 'pointer-events-none bg-transparent' : 'bg-paper'
+        revealing ? 'pointer-events-none bg-transparent' : 'bg-paper'
       }`}
       role="status"
       aria-label="Loading Oblio"
     >
-      <canvas ref={backRef} className="absolute inset-0 h-full w-full" />
-      <div
-        ref={horizonRef}
-        className="absolute left-0 top-0 origin-center rounded-full bg-ink"
-        style={{ transform: 'scale(0)' }}
+      {/* The drawing hands over to the backdrop artwork it was traced from */}
+      <canvas
+        ref={canvasRef}
+        className={`absolute inset-0 h-full w-full transition-opacity duration-[900ms] ease-out ${revealing ? 'opacity-0' : ''}`}
       />
-      <canvas ref={frontRef} className="absolute inset-0 h-full w-full" />
     </div>
   );
 }
