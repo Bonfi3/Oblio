@@ -26,7 +26,6 @@ const DUST = 110;
 
 // Intro timeline (ms)
 export const WELL_INTRO = {
-  dot: 350, // the mass appears
   rings: 250, // first ring starts
   ringStagger: 55,
   ringGrow: 900,
@@ -157,10 +156,10 @@ export function drawWell(f: WellFrame) {
   ctx.globalCompositeOperation = 'source-over';
   ctx.fillStyle = '#000';
 
-  // The mass
-  const dot = easeOutCubic(clamp01(t / WELL_INTRO.dot));
+  // The mass: not drawn during the intro, it appears with the backdrop as the loader fades
+  if (f.intro !== undefined) return;
   const [mx, my] = project(0, 0);
   ctx.beginPath();
-  ctx.arc(mx, my, 3 * dot, 0, Math.PI * 2);
+  ctx.arc(mx, my, 3, 0, Math.PI * 2);
   ctx.fill();
 }
