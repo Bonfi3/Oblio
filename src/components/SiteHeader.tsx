@@ -13,7 +13,7 @@ const WalletMultiButton = dynamic(
 
 function Wordmark({ onClick }: { onClick: (e: MouseEvent) => void }) {
   return (
-    <Link href="/" onClick={onClick} className="flex items-center gap-2 text-[19px] font-semibold tracking-[-0.02em]">
+    <Link href="/" onClick={onClick} className="flex items-center gap-1 text-[19px] font-semibold tracking-[-0.02em]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static SVG mark */}
       <img src="/oblio-mark.svg" alt="" width={30} height={30} className="h-[30px] w-[30px]" />
       Oblio
