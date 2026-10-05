@@ -24,7 +24,7 @@ const sanitize = (value: string) => {
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
+    <div className="flex items-baseline justify-between gap-4 py-3 text-[15px] lg:py-3.5 lg:text-base">
       <dt className="text-graphite">{label}</dt>
       <dd className="tabular text-right font-medium">{value}</dd>
     </div>
@@ -123,7 +123,7 @@ export function StakePanel() {
         : 'Unstake obSOL';
 
   return (
-    <section aria-label="Stake and unstake" className="rounded-[6px] border border-rule bg-paper">
+    <section aria-label="Stake and unstake" className="rounded-[6px] border border-rule bg-paper shadow-[0_24px_60px_-32px_rgba(0,0,0,0.25)]">
       <div role="tablist" className="grid grid-cols-2 border-b border-rule">
         {(['stake', 'unstake'] as const).map((m) => (
           <button
@@ -131,7 +131,7 @@ export function StakePanel() {
             role="tab"
             aria-selected={mode === m}
             onClick={() => switchMode(m)}
-            className={`relative h-14 text-[15px] font-medium transition-colors ${
+            className={`relative h-14 text-[15px] font-medium transition-colors lg:h-16 lg:text-[17px] ${
               mode === m ? 'text-ink' : 'text-graphite hover:text-ink'
             }`}
           >
@@ -143,9 +143,9 @@ export function StakePanel() {
         ))}
       </div>
 
-      <div className="p-5 sm:p-7">
+      <div className="p-5 sm:p-7 lg:p-9">
         <div className="flex items-baseline justify-between">
-          <label htmlFor="amount" className="text-sm font-medium">
+          <label htmlFor="amount" className="text-sm font-medium lg:text-[15px]">
             {isStake ? 'Amount to stake' : 'Amount to unstake'}
           </label>
           {connected && (
@@ -171,7 +171,7 @@ export function StakePanel() {
             onKeyDown={(e) => e.key === 'Enter' && submit()}
             aria-invalid={exceeds || undefined}
             aria-describedby={exceeds ? 'amount-error' : undefined}
-            className="tabular w-full min-w-0 flex-1 bg-transparent px-4 py-4 text-[28px] font-medium tracking-[-0.01em] placeholder:text-[#c4c4c4] focus:outline-none focus-visible:outline-none"
+            className="tabular w-full min-w-0 flex-1 bg-transparent px-4 py-4 text-[28px] font-medium lg:px-5 lg:py-5 lg:text-[36px] tracking-[-0.01em] placeholder:text-[#c4c4c4] focus:outline-none focus-visible:outline-none"
           />
           {connected && (
             <button
@@ -182,7 +182,7 @@ export function StakePanel() {
               Max
             </button>
           )}
-          <span className="border-l border-rule px-4 py-2 text-sm font-medium">{inputUnit}</span>
+          <span className="border-l border-rule px-4 py-2 text-sm font-medium lg:px-5 lg:text-[15px]">{inputUnit}</span>
         </div>
         <p id="amount-error" className={`mt-2 min-h-5 text-sm text-alert ${exceeds ? '' : 'invisible'}`}>
           Amount exceeds your available {inputUnit} balance.
@@ -202,7 +202,7 @@ export function StakePanel() {
         <button
           onClick={submit}
           disabled={COMING_SOON || (connected && (pending || value <= 0 || exceeds))}
-          className="hover-lift mt-6 h-13 w-full rounded-[4px] bg-ink text-[15px] font-medium text-paper hover:bg-[#262626] disabled:cursor-not-allowed disabled:bg-mist disabled:text-[#9a9a9a]"
+          className="hover-lift mt-6 h-13 w-full rounded-[4px] bg-ink text-[15px] font-medium lg:mt-8 lg:h-15 lg:text-base text-paper hover:bg-[#262626] disabled:cursor-not-allowed disabled:bg-mist disabled:text-[#9a9a9a]"
         >
           {buttonLabel}
         </button>

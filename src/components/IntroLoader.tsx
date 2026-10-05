@@ -10,7 +10,7 @@ const HOLD = 2400; // the page is revealed around the black hole
 const REVEAL = 800;
 
 interface IntroLoaderProps {
-  /** The hero horizon: the black hole forms exactly there. */
+  /** Where the black hole forms: the loader measures this element every frame. */
   targetRef: RefObject<HTMLDivElement | null>;
   onDone: () => void;
 }
@@ -40,7 +40,7 @@ export function IntroLoader({ targetRef, onDone }: IntroLoaderProps) {
       return;
     }
 
-    // The black hole forms where it lives in the hero, so start from the top of the page
+    // Start from the top of the page
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
     const previousOverflow = document.body.style.overflow;
@@ -72,7 +72,7 @@ export function IntroLoader({ targetRef, onDone }: IntroLoaderProps) {
     };
     frame = requestAnimationFrame(render);
 
-    // The white clears; the dust keeps orbiting and the hero takes over the same frame
+    // The whole loader fades out over the page
     const revealTimer = setTimeout(() => {
       setPhase('reveal');
       doneTimer = setTimeout(() => {
@@ -95,8 +95,8 @@ export function IntroLoader({ targetRef, onDone }: IntroLoaderProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] transition-colors duration-[800ms] ease-out ${
-        phase === 'reveal' ? 'bg-transparent' : 'bg-paper'
+      className={`fixed inset-0 z-[100] bg-paper transition-[opacity,transform] duration-[800ms] ease-out ${
+        phase === 'reveal' ? 'scale-[1.04] opacity-0' : ''
       }`}
       role="status"
       aria-label="Loading Oblio"

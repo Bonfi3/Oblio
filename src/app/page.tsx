@@ -1,10 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArticleList } from '@/components/ArticleList';
-import { BlackHole, BlackHoleView } from '@/components/BlackHole';
-import { DEFAULT_VIEW } from '@/components/blackHoleScene';
 import { FeatureStory } from '@/components/FeatureStory';
 import { IntroLoader } from '@/components/IntroLoader';
 import { CountUp, Reveal, ScrubWords, useScrollProgress, WordReveal } from '@/components/motion';
@@ -29,8 +28,7 @@ function ArrowLink({ href, children }: { href: string; children: React.ReactNode
 export default function Home() {
   const horizonRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const parallaxRef = useRef<HTMLDivElement>(null);
-  const heroView = useRef<BlackHoleView>({ ...DEFAULT_VIEW });
+  const backdropRef = useRef<HTMLDivElement>(null);
   // The intro only plays when the site is first loaded on this page, not on client navigations back to it.
   const [playIntro] = useState(() => !navState.introPlayed);
   const [introDone, setIntroDone] = useState(!playIntro);
@@ -45,79 +43,81 @@ export default function Home() {
     scrollToSection(section);
   }, []);
 
-  // As the hero scrolls away the black hole lags behind and tips toward the reader.
+  // The backdrop drifts slower than the page as the hero scrolls away.
   useScrollProgress(heroRef, () => {
     const hero = heroRef.current;
-    const layer = parallaxRef.current;
+    const layer = backdropRef.current;
     if (!hero || !layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const scrolled = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / hero.offsetHeight));
-    layer.style.transform = `translate3d(0, ${scrolled * hero.offsetHeight * 0.35}px, 0) scale(${1 - scrolled * 0.12})`;
-    heroView.current = { tilt: DEFAULT_VIEW.tilt + scrolled * 0.45, rotation: DEFAULT_VIEW.rotation + scrolled * 0.2 };
+    layer.style.transform = `translate3d(0, ${scrolled * hero.offsetHeight * 0.3}px, 0) scale(${1 + scrolled * 0.06})`;
   });
 
   return (
     <>
       {playIntro && <IntroLoader targetRef={horizonRef} onDone={handleIntroDone} />}
+      {/* Where the loader forms the black hole: the middle of the screen */}
+      {playIntro && !introDone && (
+        <div ref={horizonRef} aria-hidden className="pointer-events-none fixed left-1/2 top-1/2 size-[180px] -translate-x-1/2 -translate-y-1/2" />
+      )}
 
       <div className="flex min-h-dvh flex-col">
         <SiteHeader />
 
         <main className="flex-1">
-          <div
-            ref={heroRef}
-            className="mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-y-10 px-4 py-8 sm:px-8 lg:min-h-[calc(100dvh-4rem)] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-x-10 lg:py-10 xl:gap-x-14"
-          >
-            {/* The black hole sits at the center of the page: the loader forms it here */}
-            <div className="min-w-0 lg:col-start-2 lg:row-start-1">
-              <div ref={parallaxRef} className="will-change-transform">
-                <div className={introDone ? 'animate-float' : ''}>
-                  <BlackHole
-                    horizonRef={horizonRef}
-                    visible={introDone}
-                    view={heroView}
-                    interactive={introDone}
-                    className="mx-auto -my-4 max-w-[420px] sm:my-0 lg:w-[clamp(320px,min(32vw,64vh),520px)] lg:max-w-none"
-                  />
-                </div>
-              </div>
+          <div ref={heroRef} className="relative overflow-hidden">
+            <div ref={backdropRef} aria-hidden className="absolute inset-0 will-change-transform">
+              {/* The well of the backdrop (74% / 61% of the image) lands between the copy and the panel */}
+              <Image
+                src="/hero-backdrop.webp"
+                alt=""
+                width={2688}
+                height={1152}
+                priority
+                sizes="(min-width: 1024px) 140vw, 240vw"
+                className="absolute left-[60%] top-[34%] w-[240vw] max-w-none -translate-x-[74%] -translate-y-[61%] lg:left-[54%] lg:top-1/2 lg:w-[max(140vw,2000px)]"
+              />
+              {/* Keeps the copy side clean on narrow screens */}
+              <div className="absolute inset-0 bg-gradient-to-b from-paper/70 via-paper/40 to-paper lg:bg-gradient-to-r lg:from-paper/80 lg:via-paper/20 lg:to-transparent" />
             </div>
 
-            <section className="min-w-0 text-center lg:col-start-1 lg:row-start-1 lg:max-w-[420px] lg:text-left">
-              <WordReveal
-                as="h1"
-                play={introDone}
-                text="Confidential liquid staking on Solana"
-                className="mx-auto block max-w-[15ch] text-[38px] font-semibold leading-[1.04] tracking-[-0.035em] sm:text-[48px] lg:mx-0 lg:text-[42px] xl:text-[50px]"
-              />
-              <Reveal as="p" play={introDone} delay={350} className="mx-auto mt-5 max-w-[42ch] text-balance text-[17px] leading-relaxed text-graphite lg:mx-0 lg:text-pretty">
-                Stake SOL and receive obSOL, a liquid token you can hold or redeem at any time. Your position stays
-                out of view.
-              </Reveal>
+            <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-y-12 px-4 py-12 sm:px-8 lg:min-h-[calc(100dvh-4rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-x-16 lg:py-16 xl:grid-cols-[minmax(0,1fr)_minmax(0,580px)] xl:gap-x-24">
+              <section className="min-w-0 text-center lg:text-left">
+                <WordReveal
+                  as="h1"
+                  play={introDone}
+                  text="Confidential liquid staking on Solana"
+                  className="mx-auto block max-w-[14ch] text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[56px] lg:mx-0 lg:text-[68px] xl:text-[80px]"
+                />
+                <Reveal as="p" play={introDone} delay={350} className="mx-auto mt-6 max-w-[40ch] text-balance text-[18px] leading-relaxed text-graphite lg:mx-0 lg:mt-8 lg:text-pretty lg:text-[21px]">
+                  Stake SOL and receive obSOL, a liquid token you can hold or redeem at any time. Your position stays
+                  out of view.
+                </Reveal>
 
-              <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-8 grid max-w-[420px] grid-cols-2 border-t border-ink text-left lg:mx-0">
-                <div className="pt-3 pr-3">
-                  <dt className="text-[13px] leading-tight text-graphite">Provisioned staking APY</dt>
-                  <dd className="tabular mt-1 text-xl font-medium tracking-[-0.01em]">
-                    <CountUp value={PROVISIONED_APY} suffix="%" play={introDone} />
-                  </dd>
-                </div>
-                <div className="pt-3 pr-3">
-                  <dt className="text-[13px] leading-tight text-graphite">Expected additional APY</dt>
-                  <dd className="tabular mt-1 text-xl font-medium tracking-[-0.01em]">
-                    <CountUp value={EXPECTED_ADDITIONAL_APY} decimals={1} prefix="+" suffix="%" play={introDone} />
-                  </dd>
-                  <dd className="mt-1 text-[13px]">
-                    <Link href="/articles/additional-apy" className="underline decoration-rule underline-offset-4 transition-colors hover:decoration-ink">
-                      How it works
-                    </Link>
-                  </dd>
-                </div>
-              </Reveal>
-            </section>
+                <Reveal as="dl" play={introDone} delay={500} className="mx-auto mt-10 grid max-w-[560px] grid-cols-2 border-t border-ink text-left lg:mx-0 lg:mt-12">
+                  <div className="pt-4 pr-4">
+                    <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Provisioned staking APY</dt>
+                    <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
+                      <CountUp value={PROVISIONED_APY} suffix="%" play={introDone} />
+                    </dd>
+                  </div>
+                  <div className="pt-4 pr-4">
+                    <dt className="text-[13px] leading-tight text-graphite lg:text-[15px]">Expected additional APY</dt>
+                    <dd className="tabular mt-2 text-[28px] font-medium tracking-[-0.02em] lg:text-[40px]">
+                      <CountUp value={EXPECTED_ADDITIONAL_APY} decimals={1} prefix="+" suffix="%" play={introDone} />
+                    </dd>
+                    <dd className="mt-2 text-[13px] lg:text-[15px]">
+                      <Link href="/articles/additional-apy" className="underline decoration-rule underline-offset-4 transition-colors hover:decoration-ink">
+                        How it works
+                      </Link>
+                    </dd>
+                  </div>
+                </Reveal>
+              </section>
 
-            <Reveal play={introDone} delay={250} className="mx-auto w-full min-w-0 max-w-[440px] lg:col-start-3 lg:row-start-1 lg:mr-0 lg:max-w-[420px]">
-              <StakePanel />
-            </Reveal>
+              <Reveal play={introDone} delay={250} className="mx-auto w-full min-w-0 max-w-[560px] lg:mr-0">
+                <StakePanel />
+              </Reveal>
+            </div>
           </div>
 
           <section aria-label="Confidential by design" className="border-t border-rule">
