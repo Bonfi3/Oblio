@@ -82,6 +82,8 @@ export interface SceneFrame {
   view?: SceneView;
   /** Line-drawing variant: a white horizon outlined in ink, so near-side lines and dust stay dark over it. */
   outline?: boolean;
+  /** Loader only: 0..1 while the scene dissipates, dust drifting outward and fading. */
+  dissipate?: number;
   /** Loader only: ms since the intro started, and the screen half-diagonal. */
   intro?: { t: number; reach: number };
 }
@@ -96,8 +98,9 @@ export function drawScene(f: SceneFrame) {
   const { tilt: TILT, rotation, lines } = f.view ?? DEFAULT_VIEW;
   const COS = Math.cos(rotation);
   const SIN = Math.sin(rotation);
+  const fade = 1 - (f.dissipate ?? 0);
   const structure =
-    (intro ? easeOutCubic(clamp01((intro.t - STRUCTURE_START) / (STRUCTURE_END - STRUCTURE_START))) : 1) * lines;
+    (intro ? easeOutCubic(clamp01((intro.t - STRUCTURE_START) / (STRUCTURE_END - STRUCTURE_START))) : 1) * lines * fade * fade;
 
   const project = (r: number, angle: number, squash: number): [number, number] => {
     const dx = r * Math.cos(angle);
@@ -149,9 +152,10 @@ export function drawScene(f: SceneFrame) {
   for (const d of particles) {
     const settle = intro ? easeInOutCubic(clamp01((intro.t / INFALL - d.delay) / (1 - d.delay))) : 1;
     const orbitR = d.radius * horizon;
-    const r = intro ? orbitR + (d.spawn * intro.reach - orbitR) * (1 - settle) : orbitR;
+    const drift = f.dissipate ? easeOutCubic(f.dissipate) * (0.5 + d.spawn * 1.6) : 0;
+    const r = (intro ? orbitR + (d.spawn * intro.reach - orbitR) * (1 - settle) : orbitR) * (1 + drift);
     // Arrives on its orbit exactly where the hero expects it
-    const angle = d.a0 + d.speed * elapsed - (1 - settle) * d.spin;
+    const angle = d.a0 + d.speed * elapsed - (1 - settle) * d.spin + drift * 0.6;
     // The cloud flattens into the tilted disk as it settles
     const squash = 1 - (1 - TILT) * settle;
     const [x, y] = project(r, angle, squash);
@@ -161,7 +165,7 @@ export function drawScene(f: SceneFrame) {
     // Near-side dust passing in front of the horizon shows up light on black
     if (!behind) ctx.fillStyle = !f.outline && Math.hypot(x - cx, y - cy) < mask - 1 ? '#fff' : '#000';
 
-    ctx.globalAlpha = d.alpha * (intro ? 0.55 + 0.45 * settle : 1);
+    ctx.globalAlpha = d.alpha * (intro ? 0.55 + 0.45 * settle : 1) * Math.pow(fade, 1.5);
     const streak = (1 - Math.abs(2 * settle - 1)) * 8;
     if (streak > 0.5) {
       ctx.save();
