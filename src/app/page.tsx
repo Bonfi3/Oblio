@@ -43,13 +43,17 @@ export default function Home() {
     scrollToSection(section);
   }, []);
 
-  // The backdrop drifts slower than the page as the hero scrolls away.
+  // Scrolling into the next section, the black hole collapses: it shrinks, flattens edge-on,
+  // swirls and falls toward the section below until it is gone.
   useScrollProgress(heroRef, () => {
     const hero = heroRef.current;
-    const layer = backdropRef.current;
-    if (!hero || !layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const scrolled = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / hero.offsetHeight));
-    layer.style.transform = `translate3d(0, ${scrolled * hero.offsetHeight * 0.3}px, 0) scale(${1 + scrolled * 0.06})`;
+    const hole = backdropRef.current;
+    if (!hero || !hole || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const scrolled = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / (hero.offsetHeight * 0.85)));
+    const t = scrolled * scrolled * (3 - 2 * scrolled); // smoothstep
+    const scale = 1 - 0.85 * t;
+    hole.style.transform = `translate3d(0, ${t * hero.offsetHeight * 0.75}px, 0) rotate(${t * 24}deg) scale(${scale}, ${scale * (1 - 0.6 * t)})`;
+    hole.style.opacity = String(1 - Math.max(0, (scrolled - 0.55) / 0.45));
   });
 
   return (
@@ -61,26 +65,29 @@ export default function Home() {
       )}
 
       <div className="flex min-h-dvh flex-col">
-        <SiteHeader />
+        <SiteHeader overlay />
 
         <main className="flex-1">
-          <div ref={heroRef} className="relative overflow-hidden">
-            <div ref={backdropRef} aria-hidden className="absolute inset-0 will-change-transform">
-              {/* The well of the backdrop (74% / 61% of the image) lands between the copy and the panel */}
+          <div ref={heroRef} className="relative overflow-x-clip">
+            {/* A zero-size anchor on the black hole of the backdrop (69.7% / 49% of the image):
+                every transform of the collapse pivots around the hole itself */}
+            <div ref={backdropRef} aria-hidden className="absolute left-[78%] top-[43.5%] will-change-transform lg:left-[54%] lg:top-[46%]">
               <Image
                 src="/hero-backdrop.webp"
                 alt=""
-                width={2688}
-                height={1152}
+                width={3840}
+                height={1648}
                 priority
-                sizes="(min-width: 1024px) 140vw, 240vw"
-                className="absolute left-[60%] top-[34%] w-[240vw] max-w-none -translate-x-[74%] -translate-y-[61%] lg:left-[54%] lg:top-1/2 lg:w-[max(140vw,2000px)]"
+                unoptimized // already a tuned 4K WebP; re-encoding blurs the hairlines
+                className="absolute left-0 top-0 w-[210vw] max-w-none -translate-x-[69.7%] -translate-y-[49%] lg:w-[max(110vw,1500px)]"
               />
+            </div>
+            <div aria-hidden className="pointer-events-none absolute inset-0">
               {/* Keeps the copy side clean on narrow screens */}
               <div className="absolute inset-0 bg-gradient-to-b from-paper/70 via-paper/40 to-paper lg:bg-gradient-to-r lg:from-paper/80 lg:via-paper/20 lg:to-transparent" />
             </div>
 
-            <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-y-12 px-4 py-12 sm:px-8 lg:min-h-[calc(100dvh-4rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-x-16 lg:py-16 xl:grid-cols-[minmax(0,1fr)_minmax(0,580px)] xl:gap-x-24">
+            <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-center gap-y-12 px-4 pt-28 pb-12 sm:px-8 lg:min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-x-16 lg:pt-24 lg:pb-36 xl:grid-cols-[minmax(0,1fr)_minmax(0,580px)] xl:gap-x-24">
               <section className="min-w-0 text-center lg:text-left">
                 <WordReveal
                   as="h1"
@@ -120,7 +127,7 @@ export default function Home() {
             </div>
           </div>
 
-          <section aria-label="Confidential by design" className="border-t border-rule">
+          <section aria-label="Confidential by design" className="relative border-t border-rule">
             <div className="mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:py-40">
               <Reveal as="p" className="text-[13px] font-medium text-graphite">
                 Confidential by design

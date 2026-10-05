@@ -23,7 +23,8 @@ function Wordmark({ onClick }: { onClick: (e: MouseEvent) => void }) {
 
 const isPlainClick = (e: MouseEvent) => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 
-export function SiteHeader() {
+/** `overlay` lays the header transparently over the top of the page (the home hero). */
+export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const onHome = pathname === '/';
@@ -52,7 +53,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="border-b border-rule">
+    <header className={overlay ? 'absolute inset-x-0 top-0 z-20' : 'border-b border-rule'}>
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-8">
         <div className="flex items-center gap-8">
           <Wordmark onClick={goHome} />
