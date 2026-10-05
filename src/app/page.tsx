@@ -105,7 +105,7 @@ export default function Home() {
               </Reveal>
               <ScrubWords
                 text="On a public chain every stake position is visible to anyone. Oblio pools them, earns the full provisioned rate, targets more on top, and keeps your position out of view."
-                className="mt-6 max-w-[24ch] text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-paper mix-blend-difference sm:text-[52px] lg:max-w-[26ch] lg:text-[64px]"
+                className="mt-6 max-w-[24ch] text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] select-none text-paper mix-blend-difference sm:text-[52px] lg:max-w-[26ch] lg:text-[64px]"
               />
             </div>
           </section>

@@ -94,8 +94,18 @@ export function WordReveal({ text, as: Tag = 'span', className = '', delay = 0, 
   const inView = useInView(ref);
   const shown = play ?? inView;
   const words = text.split(' ');
+  const [done, setDone] = useState(false);
+
+  // When the last word has landed, drop the masks so the heading is plain, selectable text
+  useEffect(() => {
+    if (!shown) return;
+    const wait = prefersReducedMotion() ? 0 : delay + (words.length - 1) * stagger + 950;
+    const timer = setTimeout(() => setDone(true), wait);
+    return () => clearTimeout(timer);
+  }, [shown, delay, stagger, words.length]);
+
   return (
-    <Tag ref={ref} className={`${shown ? 'is-visible' : ''} ${className}`} aria-label={text}>
+    <Tag ref={ref} className={`${shown ? 'is-visible' : ''} ${done ? 'is-done' : ''} ${className}`} aria-label={text}>
       {words.map((word, i) => (
         // The space sits outside the inline-block mask, where it is not collapsed
         <Fragment key={i}>

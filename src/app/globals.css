@@ -81,19 +81,30 @@ body {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* Room for descenders inside the mask */
-  padding-bottom: 0.1em;
-  margin-bottom: -0.1em;
+  /* Room for descenders (g, q, y) inside the mask */
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
 }
 
 .word {
   display: inline-block;
-  transform: translateY(110%);
+  transform: translateY(130%);
   transition: transform 900ms var(--ease-out);
 }
 
 .is-visible .word {
   transform: none;
+}
+
+/* Once the words are in, the masks go away: plain text that selects cleanly */
+.is-done .word-mask,
+.is-done .word {
+  display: inline;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  transform: none;
+  transition: none;
 }
 
 @keyframes float {
