@@ -12,6 +12,12 @@
 
 html {
   background: var(--color-paper);
+  /* No visible scrollbar: it would appear when the intro unlocks scrolling and shift the layout */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
