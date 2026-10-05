@@ -81,7 +81,7 @@ export default async function ArticlePage(props: PageProps<'/articles/[slug]'>) 
               </div>
               <Link
                 href="/"
-                className="inline-flex h-11 items-center rounded-[4px] bg-ink px-5 text-[15px] font-medium text-paper transition-colors hover:bg-[#262626]"
+                className="hover-lift inline-flex h-11 items-center rounded-[4px] bg-ink px-5 text-[15px] font-medium text-paper hover:bg-[#262626]"
               >
                 Go to staking
               </Link>

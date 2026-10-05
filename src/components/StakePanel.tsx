@@ -196,15 +196,13 @@ export function StakePanel() {
               <Row label="Provisioned staking APY" value={`${PROVISIONED_APY.toFixed(2)}%`} />
               <Row label="Estimated yearly reward" value={`${format(value * (PROVISIONED_APY / 100))} SOL`} />
             </>
-          ) : (
-            <Row label="Redemption rate" value={`1 obSOL = ${UNSTAKE_RATE.toFixed(2)} SOL`} />
-          )}
+          ) : null}
         </dl>
 
         <button
           onClick={submit}
           disabled={COMING_SOON || (connected && (pending || value <= 0 || exceeds))}
-          className="mt-6 h-13 w-full rounded-[4px] bg-ink text-[15px] font-medium text-paper transition-colors hover:bg-[#262626] disabled:cursor-not-allowed disabled:bg-mist disabled:text-[#9a9a9a]"
+          className="hover-lift mt-6 h-13 w-full rounded-[4px] bg-ink text-[15px] font-medium text-paper hover:bg-[#262626] disabled:cursor-not-allowed disabled:bg-mist disabled:text-[#9a9a9a]"
         >
           {buttonLabel}
         </button>

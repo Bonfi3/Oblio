@@ -1,14 +1,15 @@
 import Link from 'next/link';
+import { Reveal } from '@/components/motion';
 import { Article, formatDate } from '@/lib/articles';
 
 export function ArticleList({ articles }: { articles: Article[] }) {
   return (
     <ul className="border-t border-ink">
-      {articles.map((a) => (
-        <li key={a.slug} className="border-b border-rule">
+      {articles.map((a, i) => (
+        <Reveal as="li" key={a.slug} delay={i * 90} className="border-b border-rule">
           <Link
             href={`/articles/${a.slug}`}
-            className="group grid gap-x-8 gap-y-2 py-6 md:grid-cols-[180px_minmax(0,1fr)_auto] md:items-baseline"
+            className="group grid gap-x-8 gap-y-2 py-6 transition-[padding] duration-300 ease-out hover:px-3 md:grid-cols-[180px_minmax(0,1fr)_auto] md:items-baseline"
           >
             <div className="flex gap-3 text-[13px] text-graphite md:flex-col md:gap-1">
               <span className="font-medium text-ink">{a.category}</span>
@@ -26,7 +27,7 @@ export function ArticleList({ articles }: { articles: Article[] }) {
               {a.minutes} min read <span aria-hidden className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
             </span>
           </Link>
-        </li>
+        </Reveal>
       ))}
     </ul>
   );

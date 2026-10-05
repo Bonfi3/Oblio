@@ -8,8 +8,6 @@
 
 // Geometry, in horizon radii unless noted
 export const HORIZON_RATIO = 0.38; // horizon diameter / hero container width
-const TILT = 0.27; // vertical squash of the accretion disk
-const PLANE_ROTATION = -0.12; // radians
 const INNER = 1.2;
 const OUTER = 2.55;
 const ORBITS = [1.35, 1.75, 2.2, 2.55];
@@ -20,8 +18,14 @@ export const INFALL = 1900; // dust spirals from the screen onto its orbit
 export const STRUCTURE_START = 1100; // orbit lines and lensed halo fade in
 export const STRUCTURE_END = 2100;
 
-const COS = Math.cos(PLANE_ROTATION);
-const SIN = Math.sin(PLANE_ROTATION);
+/** Camera on the disk. Scroll and pointer move it; the defaults are the hero framing. */
+export interface SceneView {
+  tilt: number; // vertical squash of the accretion disk: 0 edge-on, 1 face-on
+  rotation: number; // in-plane rotation of the disk, radians
+  lines: number; // opacity multiplier of the orbit lines and photon ring
+}
+
+export const DEFAULT_VIEW: SceneView = { tilt: 0.27, rotation: -0.12, lines: 1 };
 
 export const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 export const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -73,15 +77,25 @@ export interface SceneFrame {
   horizon: number; // final horizon radius, px
   mask: number; // current horizon radius (grows during the intro), px
   now: number;
+  /** Simulation time in ms; defaults to the time since the scene epoch. */
+  elapsed?: number;
+  view?: SceneView;
   /** Loader only: ms since the intro started, and the screen half-diagonal. */
   intro?: { t: number; reach: number };
 }
 
+/** Time since the scene epoch: where an instance running at normal speed starts. */
+export const sceneTime = (now: number) => now - getScene().epoch;
+
 export function drawScene(f: SceneFrame) {
   const { particles, epoch } = getScene();
   const { back, front, cx, cy, horizon, mask, intro } = f;
-  const elapsed = f.now - epoch;
-  const structure = intro ? easeOutCubic(clamp01((intro.t - STRUCTURE_START) / (STRUCTURE_END - STRUCTURE_START))) : 1;
+  const elapsed = f.elapsed ?? f.now - epoch;
+  const { tilt: TILT, rotation, lines } = f.view ?? DEFAULT_VIEW;
+  const COS = Math.cos(rotation);
+  const SIN = Math.sin(rotation);
+  const structure =
+    (intro ? easeOutCubic(clamp01((intro.t - STRUCTURE_START) / (STRUCTURE_END - STRUCTURE_START))) : 1) * lines;
 
   const project = (r: number, angle: number, squash: number): [number, number] => {
     const dx = r * Math.cos(angle);
