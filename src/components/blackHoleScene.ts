@@ -80,6 +80,8 @@ export interface SceneFrame {
   /** Simulation time in ms; defaults to the time since the scene epoch. */
   elapsed?: number;
   view?: SceneView;
+  /** Line-drawing variant: a white horizon outlined in ink, so near-side lines and dust stay dark over it. */
+  outline?: boolean;
   /** Loader only: ms since the intro started, and the screen half-diagonal. */
   intro?: { t: number; reach: number };
 }
@@ -131,7 +133,7 @@ export function drawScene(f: SceneFrame) {
       front.beginPath();
       front.arc(cx, cy, mask, 0, Math.PI * 2);
       front.clip();
-      front.strokeStyle = `rgba(255,255,255,${0.35 * structure})`;
+      front.strokeStyle = f.outline ? `rgba(0,0,0,${0.14 * structure})` : `rgba(255,255,255,${0.35 * structure})`;
       front.stroke(near);
       front.restore();
     }
@@ -157,7 +159,7 @@ export function drawScene(f: SceneFrame) {
     const ctx = behind ? back : front;
 
     // Near-side dust passing in front of the horizon shows up light on black
-    if (!behind) ctx.fillStyle = Math.hypot(x - cx, y - cy) < mask - 1 ? '#fff' : '#000';
+    if (!behind) ctx.fillStyle = !f.outline && Math.hypot(x - cx, y - cy) < mask - 1 ? '#fff' : '#000';
 
     ctx.globalAlpha = d.alpha * (intro ? 0.55 + 0.45 * settle : 1);
     const streak = (1 - Math.abs(2 * settle - 1)) * 8;

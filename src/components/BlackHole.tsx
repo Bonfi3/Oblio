@@ -16,6 +16,8 @@ interface BlackHoleProps {
   interactive?: boolean;
   /** Square leaves room for the disk when it is seen face-on. */
   square?: boolean;
+  /** Draws the hole as a line drawing: white horizon with an ink outline. */
+  outline?: boolean;
   className?: string;
 }
 
@@ -27,6 +29,7 @@ export function BlackHole({
   view,
   interactive = false,
   square = false,
+  outline = false,
   className = '',
 }: BlackHoleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,6 +97,7 @@ export function BlackHole({
         now,
         elapsed,
         view: current,
+        outline,
       });
     };
 
@@ -138,7 +142,7 @@ export function BlackHole({
       visibility.disconnect();
       window.removeEventListener('pointermove', onPointer);
     };
-  }, [view, interactive]);
+  }, [view, interactive, outline]);
 
   const shown = visible ? 'opacity-100' : 'opacity-0';
 
@@ -147,7 +151,9 @@ export function BlackHole({
       <canvas ref={backRef} className={`absolute inset-0 h-full w-full ${shown}`} />
       <div
         ref={horizonRef}
-        className={`absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink ${shown}`}
+        className={`absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full ${
+          outline ? 'bg-paper ring-1 ring-ink' : 'bg-ink'
+        } ${shown}`}
         style={{ width: `${HORIZON_RATIO * 100}%` }}
       />
       <canvas ref={frontRef} className={`absolute inset-0 h-full w-full ${shown}`} />
